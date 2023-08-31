@@ -1,0 +1,32 @@
+[2023-09-01T02:30:01.832+0900] {processor.py:157} INFO - Started process (PID=13587) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:30:01.832+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py for tasks to queue
+[2023-09-01T02:30:01.832+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:01.832+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:30:01.851+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sla_dag']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:30:02.214+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:02.214+0900] {manager.py:501} INFO - Created Permission View: can delete on DAG:example_sla_dag
+[2023-09-01T02:30:02.217+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:02.217+0900] {manager.py:501} INFO - Created Permission View: can edit on DAG:example_sla_dag
+[2023-09-01T02:30:02.219+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:02.219+0900] {manager.py:501} INFO - Created Permission View: can read on DAG:example_sla_dag
+[2023-09-01T02:30:02.223+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:02.223+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:30:02.226+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:02.226+0900] {dag.py:2929} INFO - Creating ORM DAG for example_sla_dag
+[2023-09-01T02:30:02.230+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:02.230+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sla_dag to 2023-08-31T17:28:00+00:00, run_after=2023-08-31T17:30:00+00:00
+[2023-09-01T02:30:02.236+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py took 0.404 seconds
+[2023-09-01T02:31:18.792+0900] {processor.py:157} INFO - Started process (PID=13636) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:31:18.793+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py for tasks to queue
+[2023-09-01T02:31:18.793+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:18.793+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:31:18.812+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sla_dag']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:31:18.880+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:18.880+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:31:18.887+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:18.887+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sla_dag to 2023-08-31T17:28:00+00:00, run_after=2023-08-31T17:30:00+00:00
+[2023-09-01T02:31:18.894+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py took 0.102 seconds
+[2023-09-01T02:32:30.453+0900] {processor.py:157} INFO - Started process (PID=13705) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:32:30.454+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py for tasks to queue
+[2023-09-01T02:32:30.454+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:30.454+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:32:30.473+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sla_dag']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:32:30.540+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:30.540+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:32:30.547+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:30.547+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sla_dag to 2023-08-31T17:30:00+00:00, run_after=2023-08-31T17:32:00+00:00
+[2023-09-01T02:32:30.554+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py took 0.102 seconds
+[2023-09-01T02:33:41.617+0900] {processor.py:157} INFO - Started process (PID=13756) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:33:41.617+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py for tasks to queue
+[2023-09-01T02:33:41.617+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:41.617+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:33:41.636+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sla_dag']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py
+[2023-09-01T02:33:41.703+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:41.702+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:33:41.710+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:41.710+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sla_dag to 2023-08-31T17:30:00+00:00, run_after=2023-08-31T17:32:00+00:00
+[2023-09-01T02:33:41.717+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sla_dag.py took 0.100 seconds

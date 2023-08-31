@@ -1,0 +1,32 @@
+[2023-09-01T02:30:54.427+0900] {processor.py:157} INFO - Started process (PID=13617) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:30:54.428+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py for tasks to queue
+[2023-09-01T02:30:54.428+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:54.428+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:30:54.453+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_bash_operator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:30:54.810+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:54.810+0900] {manager.py:501} INFO - Created Permission View: can read on DAG:example_bash_operator
+[2023-09-01T02:30:54.813+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:54.813+0900] {manager.py:501} INFO - Created Permission View: can edit on DAG:example_bash_operator
+[2023-09-01T02:30:54.815+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:54.815+0900] {manager.py:501} INFO - Created Permission View: can delete on DAG:example_bash_operator
+[2023-09-01T02:30:54.819+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:54.819+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:30:54.822+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:54.822+0900] {dag.py:2929} INFO - Creating ORM DAG for example_bash_operator
+[2023-09-01T02:30:54.825+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:54.825+0900] {dag.py:3677} INFO - Setting next_dagrun for example_bash_operator to 2023-08-30T00:00:00+00:00, run_after=2023-08-31T00:00:00+00:00
+[2023-09-01T02:30:54.831+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py took 0.404 seconds
+[2023-09-01T02:32:12.667+0900] {processor.py:157} INFO - Started process (PID=13693) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:32:12.668+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py for tasks to queue
+[2023-09-01T02:32:12.669+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:12.669+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:32:12.694+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_bash_operator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:32:12.751+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:12.751+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:32:12.758+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:12.758+0900] {dag.py:3677} INFO - Setting next_dagrun for example_bash_operator to 2023-08-30T00:00:00+00:00, run_after=2023-08-31T00:00:00+00:00
+[2023-09-01T02:32:12.764+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py took 0.097 seconds
+[2023-09-01T02:33:24.802+0900] {processor.py:157} INFO - Started process (PID=13744) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:33:24.803+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py for tasks to queue
+[2023-09-01T02:33:24.803+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:24.803+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:33:24.828+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_bash_operator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:33:24.883+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:24.883+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:33:24.890+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:24.890+0900] {dag.py:3677} INFO - Setting next_dagrun for example_bash_operator to 2023-08-30T00:00:00+00:00, run_after=2023-08-31T00:00:00+00:00
+[2023-09-01T02:33:24.897+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py took 0.095 seconds
+[2023-09-01T02:34:35.149+0900] {processor.py:157} INFO - Started process (PID=13797) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:34:35.150+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py for tasks to queue
+[2023-09-01T02:34:35.150+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:34:35.150+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:34:35.175+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_bash_operator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py
+[2023-09-01T02:34:35.231+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:34:35.231+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:34:35.238+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:34:35.238+0900] {dag.py:3677} INFO - Setting next_dagrun for example_bash_operator to 2023-08-30T00:00:00+00:00, run_after=2023-08-31T00:00:00+00:00
+[2023-09-01T02:34:35.244+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_bash_operator.py took 0.096 seconds

@@ -1,0 +1,32 @@
+[2023-09-01T02:30:13.764+0900] {processor.py:157} INFO - Started process (PID=13595) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:30:13.764+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py for tasks to queue
+[2023-09-01T02:30:13.765+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:13.765+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:30:13.783+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sensor_decorator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:30:14.153+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:14.153+0900] {manager.py:501} INFO - Created Permission View: can edit on DAG:example_sensor_decorator
+[2023-09-01T02:30:14.156+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:14.156+0900] {manager.py:501} INFO - Created Permission View: can read on DAG:example_sensor_decorator
+[2023-09-01T02:30:14.158+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:14.158+0900] {manager.py:501} INFO - Created Permission View: can delete on DAG:example_sensor_decorator
+[2023-09-01T02:30:14.162+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:14.162+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:30:14.165+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:14.165+0900] {dag.py:2929} INFO - Creating ORM DAG for example_sensor_decorator
+[2023-09-01T02:30:14.165+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:14.165+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sensor_decorator to None, run_after=None
+[2023-09-01T02:30:14.172+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py took 0.408 seconds
+[2023-09-01T02:31:28.411+0900] {processor.py:157} INFO - Started process (PID=13643) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:31:28.412+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py for tasks to queue
+[2023-09-01T02:31:28.412+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:28.412+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:31:28.430+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sensor_decorator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:31:28.504+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:28.503+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:31:28.507+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:28.507+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sensor_decorator to None, run_after=None
+[2023-09-01T02:31:28.514+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py took 0.103 seconds
+[2023-09-01T02:32:40.037+0900] {processor.py:157} INFO - Started process (PID=13712) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:32:40.038+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py for tasks to queue
+[2023-09-01T02:32:40.038+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:40.038+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:32:40.057+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sensor_decorator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:32:40.131+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:40.130+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:32:40.134+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:40.134+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sensor_decorator to None, run_after=None
+[2023-09-01T02:32:40.141+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py took 0.104 seconds
+[2023-09-01T02:33:52.147+0900] {processor.py:157} INFO - Started process (PID=13764) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:33:52.147+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py for tasks to queue
+[2023-09-01T02:33:52.147+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:52.147+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:33:52.166+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_sensor_decorator']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py
+[2023-09-01T02:33:52.240+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:52.240+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:33:52.244+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:52.244+0900] {dag.py:3677} INFO - Setting next_dagrun for example_sensor_decorator to None, run_after=None
+[2023-09-01T02:33:52.251+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_sensor_decorator.py took 0.104 seconds

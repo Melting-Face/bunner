@@ -1,0 +1,48 @@
+[2023-09-01T02:29:47.890+0900] {processor.py:157} INFO - Started process (PID=13579) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:29:47.890+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py for tasks to queue
+[2023-09-01T02:29:47.890+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:47.890+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:29:47.910+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_xcom_args_with_operators', 'example_xcom_args']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:29:48.270+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.270+0900] {manager.py:501} INFO - Created Permission View: can delete on DAG:example_xcom_args_with_operators
+[2023-09-01T02:29:48.273+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.273+0900] {manager.py:501} INFO - Created Permission View: can read on DAG:example_xcom_args_with_operators
+[2023-09-01T02:29:48.275+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.275+0900] {manager.py:501} INFO - Created Permission View: can edit on DAG:example_xcom_args_with_operators
+[2023-09-01T02:29:48.282+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.282+0900] {manager.py:501} INFO - Created Permission View: can delete on DAG:example_xcom_args
+[2023-09-01T02:29:48.284+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.284+0900] {manager.py:501} INFO - Created Permission View: can read on DAG:example_xcom_args
+[2023-09-01T02:29:48.286+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.286+0900] {manager.py:501} INFO - Created Permission View: can edit on DAG:example_xcom_args
+[2023-09-01T02:29:48.287+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.287+0900] {dag.py:2907} INFO - Sync 2 DAGs
+[2023-09-01T02:29:48.290+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.290+0900] {dag.py:2929} INFO - Creating ORM DAG for example_xcom_args_with_operators
+[2023-09-01T02:29:48.290+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.290+0900] {dag.py:2929} INFO - Creating ORM DAG for example_xcom_args
+[2023-09-01T02:29:48.291+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.291+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args to None, run_after=None
+[2023-09-01T02:29:48.291+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:29:48.291+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args_with_operators to None, run_after=None
+[2023-09-01T02:29:48.297+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py took 0.407 seconds
+[2023-09-01T02:31:07.627+0900] {processor.py:157} INFO - Started process (PID=13627) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:31:07.627+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py for tasks to queue
+[2023-09-01T02:31:07.627+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:07.627+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:31:07.646+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_xcom_args', 'example_xcom_args_with_operators']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:31:07.715+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:07.715+0900] {dag.py:2907} INFO - Sync 2 DAGs
+[2023-09-01T02:31:07.718+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:07.718+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args to None, run_after=None
+[2023-09-01T02:31:07.719+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:07.719+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args_with_operators to None, run_after=None
+[2023-09-01T02:31:07.726+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py took 0.099 seconds
+[2023-09-01T02:31:50.135+0900] {processor.py:157} INFO - Started process (PID=13659) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:31:50.135+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py for tasks to queue
+[2023-09-01T02:31:50.135+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:50.135+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:31:50.155+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_xcom_args', 'example_xcom_args_with_operators']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:31:50.225+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:50.225+0900] {dag.py:2907} INFO - Sync 2 DAGs
+[2023-09-01T02:31:50.228+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:50.228+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args to None, run_after=None
+[2023-09-01T02:31:50.229+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:50.229+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args_with_operators to None, run_after=None
+[2023-09-01T02:31:50.236+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py took 0.101 seconds
+[2023-09-01T02:33:01.932+0900] {processor.py:157} INFO - Started process (PID=13728) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:33:01.932+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py for tasks to queue
+[2023-09-01T02:33:01.932+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:01.932+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:33:01.952+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_xcom_args', 'example_xcom_args_with_operators']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:33:02.020+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:02.020+0900] {dag.py:2907} INFO - Sync 2 DAGs
+[2023-09-01T02:33:02.023+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:02.023+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args to None, run_after=None
+[2023-09-01T02:33:02.024+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:02.024+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args_with_operators to None, run_after=None
+[2023-09-01T02:33:02.031+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py took 0.099 seconds
+[2023-09-01T02:34:12.837+0900] {processor.py:157} INFO - Started process (PID=13779) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:34:12.838+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py for tasks to queue
+[2023-09-01T02:34:12.838+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:34:12.838+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:34:12.858+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_xcom_args', 'example_xcom_args_with_operators']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py
+[2023-09-01T02:34:12.931+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:34:12.930+0900] {dag.py:2907} INFO - Sync 2 DAGs
+[2023-09-01T02:34:12.934+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:34:12.934+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args to None, run_after=None
+[2023-09-01T02:34:12.935+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:34:12.935+0900] {dag.py:3677} INFO - Setting next_dagrun for example_xcom_args_with_operators to None, run_after=None
+[2023-09-01T02:34:12.942+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_xcomargs.py took 0.105 seconds

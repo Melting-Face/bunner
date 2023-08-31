@@ -1,0 +1,32 @@
+[2023-09-01T02:30:19.757+0900] {processor.py:157} INFO - Started process (PID=13598) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:30:19.758+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py for tasks to queue
+[2023-09-01T02:30:19.758+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:19.758+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:30:19.799+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_params_ui_tutorial']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:30:20.163+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:20.163+0900] {manager.py:501} INFO - Created Permission View: can edit on DAG:example_params_ui_tutorial
+[2023-09-01T02:30:20.167+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:20.166+0900] {manager.py:501} INFO - Created Permission View: can delete on DAG:example_params_ui_tutorial
+[2023-09-01T02:30:20.169+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:20.169+0900] {manager.py:501} INFO - Created Permission View: can read on DAG:example_params_ui_tutorial
+[2023-09-01T02:30:20.174+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:20.174+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:30:20.179+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:20.178+0900] {dag.py:2929} INFO - Creating ORM DAG for example_params_ui_tutorial
+[2023-09-01T02:30:20.179+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:30:20.179+0900] {dag.py:3677} INFO - Setting next_dagrun for example_params_ui_tutorial to None, run_after=None
+[2023-09-01T02:30:20.188+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py took 0.431 seconds
+[2023-09-01T02:31:32.625+0900] {processor.py:157} INFO - Started process (PID=13646) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:31:32.625+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py for tasks to queue
+[2023-09-01T02:31:32.625+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:32.625+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:31:32.666+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_params_ui_tutorial']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:31:32.728+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:32.728+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:31:32.731+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:31:32.731+0900] {dag.py:3677} INFO - Setting next_dagrun for example_params_ui_tutorial to None, run_after=None
+[2023-09-01T02:31:32.737+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py took 0.113 seconds
+[2023-09-01T02:32:44.326+0900] {processor.py:157} INFO - Started process (PID=13715) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:32:44.327+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py for tasks to queue
+[2023-09-01T02:32:44.327+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:44.327+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:32:44.368+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_params_ui_tutorial']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:32:44.429+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:44.429+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:32:44.432+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:32:44.432+0900] {dag.py:3677} INFO - Setting next_dagrun for example_params_ui_tutorial to None, run_after=None
+[2023-09-01T02:32:44.439+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py took 0.114 seconds
+[2023-09-01T02:33:56.010+0900] {processor.py:157} INFO - Started process (PID=13767) to work on /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:33:56.011+0900] {processor.py:829} INFO - Processing file /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py for tasks to queue
+[2023-09-01T02:33:56.011+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:56.011+0900] {dagbag.py:539} INFO - Filling up the DagBag from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:33:56.053+0900] {processor.py:839} INFO - DAG(s) dict_keys(['example_params_ui_tutorial']) retrieved from /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py
+[2023-09-01T02:33:56.116+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:56.115+0900] {dag.py:2907} INFO - Sync 1 DAGs
+[2023-09-01T02:33:56.119+0900] {logging_mixin.py:151} INFO - [2023-09-01T02:33:56.119+0900] {dag.py:3677} INFO - Setting next_dagrun for example_params_ui_tutorial to None, run_after=None
+[2023-09-01T02:33:56.126+0900] {processor.py:179} INFO - Processing /opt/homebrew/Caskroom/miniforge/base/lib/python3.10/site-packages/airflow/example_dags/example_params_ui_tutorial.py took 0.116 seconds
