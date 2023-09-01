@@ -4,3 +4,4 @@ pyspark
 slack_sdk
 asgiref
 confluent-kafka
+psycopg2-binary
