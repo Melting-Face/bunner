@@ -1,7 +1,13 @@
 mysqlclient
 apache-airflow
+apache-airflow-providers-apache-kafka
+apache-airflow-providers-apache-spark
+apache-airflow-providers-slack
+apache-airflow-providers-snowflake
 pyspark
 slack_sdk
 asgiref
 confluent-kafka
 psycopg2-binary
+snowflake-connector-python
+snowflake-sqlalchemy
