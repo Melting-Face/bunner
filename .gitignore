@@ -1,3 +1,5 @@
+data/
 logs/
-standalone_admin_password
+standalone_admin_password.txt
+airflow-webserver.pid
 airflow.db
