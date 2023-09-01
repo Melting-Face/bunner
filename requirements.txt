@@ -1,0 +1,5 @@
+apache-airflow
+pyspark
+slack_sdk
+asgiref
+confluent-kafka

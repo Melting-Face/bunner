@@ -1,1 +1,3 @@
 logs/
+standalone_admin_password
+airflow.db
