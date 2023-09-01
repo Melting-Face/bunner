@@ -1,3 +1,5 @@
+import fs from 'fs/promises';
+
 import {
   expect,
   test,
@@ -25,8 +27,12 @@ test('file download', async () => {
     const directory = await unzipper.Open.buffer(response);
     for (const file of directory.files) {
       const name = file.path;
+      logger.info(name);
+      expect(name).toBeTruthy();
       if (`${fileName}.csv` === name) {
+        const buffer: Buffer = await file.buffer();
         logger.info(name);
+        await fs.writeFile(`${fileName}.csv`, buffer);
       }
     }
 
