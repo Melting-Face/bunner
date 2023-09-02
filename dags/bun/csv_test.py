@@ -3,6 +3,7 @@ import logging
 import pendulum
 from airflow.models import DAG
 from airflow.operators.bash import BashOperator
+from constants import BUN_TEST
 
 logger = logging.getLogger(__name__)
 
@@ -14,5 +15,5 @@ with DAG(
 ) as dag:
     t0 = BashOperator(
         task_id="execute-bun",
-        bash_command="bun test $AIRFLOW_HOME/test/production/fao.test.ts"
+        bash_command=BUN_TEST.format(category="production", bot="fao")
     )
