@@ -9,7 +9,6 @@ import {
   logger,
 } from '../lib/utils';
 
-const startOffset = 0;
 const limit = 10;
 const host = 'https://theedgemalaysia.com';
 const newsList = [];
@@ -20,13 +19,16 @@ const pathUrls = [
   '/api/loadMoreOption?offset={offset}&option=politics',
 ];
 
-test('produce', () => {
+test('produce', async () => {
   for (const pathUrl of pathUrls) {
-    let offset = startOffset;
-    logger.info(pathUrl);
+    let offset = 0;
     let dataDoesExisted = true;
     while (dataDoesExisted) {
-
+      const url = `${host}${pathUrl}`.replace('{offset}', `${offset}`);
+      logger.info(url);
+      // const response = await request(url);
+      await delay(1000);
+      offset += limit;
     }
   }
 });
