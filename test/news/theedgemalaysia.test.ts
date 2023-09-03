@@ -91,13 +91,14 @@ test('consume', async () => {
 afterAll(async () => {
   const producer = kafka.producer();
   await producer.connect();
-  await producer.send({
-    topic: 'news',
-    messages: [
-      {
-        key: '0', value: 'test', partition: 0
-      },
-    ],
-  });
+  await producer.sendBatch({
+    topicMessages: [{
+      topic: 'news',
+      messages: [
+        {
+          key: '0', value: 'test', partition: 0,
+        },
+      ],
+    }]});
   await producer.disconnect();
 });
