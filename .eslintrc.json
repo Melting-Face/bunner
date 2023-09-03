@@ -113,6 +113,7 @@
         ],
         "allowSeparatedGroups": false
       }
-    ]
+    ],
+    "@typescript-eslint/no-explicit-any": 0
   }
 }

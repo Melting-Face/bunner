@@ -19,7 +19,7 @@ services:
       - |
         sleep 15
         /etc/confluent/docker/run
-        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic queue --replication-factor 1 --partitions 1
+        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic news --replication-factor 1 --partitions 1
         kafka-topics --bootstrap-server kafka:9092 --list
     depends_on:
       - zookeeper
