@@ -95,7 +95,7 @@ afterAll(async () => {
     topic: 'news',
     messages: [
       {
-        key: '0', value: 'test',
+        key: '0', value: 'test', partition: 0
       },
     ],
   });
