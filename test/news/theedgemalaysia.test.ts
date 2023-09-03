@@ -4,6 +4,7 @@ import {
   test,
 } from 'bun:test';
 import { load } from 'cheerio';
+import { Partitioners } from 'kafkajs';
 import moment from 'moment';
 
 import request from '../lib/request';
@@ -89,16 +90,15 @@ test('consume', async () => {
 }, 60000);
 
 afterAll(async () => {
-  const producer = kafka.producer();
+  const producer = kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner });
   await producer.connect();
-  await producer.sendBatch({
-    topicMessages: [{
-      topic: 'news',
-      messages: [
-        {
-          key: '0', value: 'test', partition: 0,
-        },
-      ],
-    }]});
+  await producer.send({
+    topic: 'news',
+    messages: [
+      {
+        key: '0', value: 'test', partition: 0,
+      },
+    ],
+  });
   await producer.disconnect();
 });

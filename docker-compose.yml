@@ -35,7 +35,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
     image: confluentinc/cp-kafka:latest
     ports:
-      - "29092:29092"
+      - "29092:9092"
     restart: always
 
   zookeeper:

@@ -7,7 +7,7 @@ import {
 
 const kafka = new Kafka({
   clientId: 'test',
-  brokers: ['localhost:29092'],
+  brokers: ['127.0.0.1:29092'],
 });
 
 async function delay(num: number) {
