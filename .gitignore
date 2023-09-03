@@ -4,3 +4,4 @@ node_modules/
 standalone_admin_password.txt
 airflow-webserver.pid
 airflow.db
+**/__pycache__/**

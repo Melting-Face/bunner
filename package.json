@@ -21,7 +21,6 @@
     "@prisma/client": "^5.0.0",
     "cheerio": "^1.0.0-rc.12",
     "kafkajs": "^2.2.4",
-    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "mongoose": "^7.4.1",
     "pdfjs-dist": "^3.9.179",
