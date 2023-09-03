@@ -19,14 +19,13 @@ services:
       - |
         sleep 15
         /etc/confluent/docker/run
-        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic news --replication-factor 1 --partitions 1
-        kafka-topics --bootstrap-server kafka:9092 --list
+        kafka-topics --bootstrap-server localhost:29092 --create --if-not-exists --topic news
     depends_on:
       - zookeeper
     entrypoint: ['sh', '-c']
     environment:
       KAFKA_ADVERTISED_LISTENERS:
-        "PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:59092"
+        "PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092"
       KAFKA_BROKER_ID: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -36,7 +35,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
     image: confluentinc/cp-kafka:latest
     ports:
-      - "59092:59092"
+      - "29092:29092"
     restart: always
 
   zookeeper:
@@ -49,5 +48,5 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     image: confluentinc/cp-zookeeper:latest
     ports:
-      - "52181:2181"
+      - "22181:2181"
     restart: always

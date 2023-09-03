@@ -1,11 +1,9 @@
 import {
   afterAll,
-  beforeAll,
   expect,
   test,
 } from 'bun:test';
 import { load } from 'cheerio';
-import { Partitioners } from 'kafkajs';
 import moment from 'moment';
 
 import request from '../lib/request';
@@ -91,12 +89,14 @@ test('consume', async () => {
 }, 60000);
 
 afterAll(async () => {
-  const producer = kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner });
+  const producer = kafka.producer();
   await producer.connect();
   await producer.send({
     topic: 'news',
     messages: [
-      { value: 'test', partition: 0 },
+      {
+        key: '0', value: 'test',
+      },
     ],
   });
   await producer.disconnect();

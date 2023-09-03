@@ -6,8 +6,8 @@ import {
 } from 'winston';
 
 const kafka = new Kafka({
-  clientId: 'my-app',
-  brokers: ['localhost:59092'],
+  clientId: 'test',
+  brokers: ['localhost:29092'],
 });
 
 async function delay(num: number) {
