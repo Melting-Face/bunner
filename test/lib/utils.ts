@@ -5,10 +5,7 @@ import {
   transports,
 } from 'winston';
 
-const kafka = new Kafka({
-  clientId: 'test',
-  brokers: ['127.0.0.1:29092'],
-});
+const kafka = new Kafka({ brokers: ['localhost:29092'] });
 
 async function delay(num: number) {
   await new Promise((resolve) => setTimeout(resolve, num));
