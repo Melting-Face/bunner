@@ -13,7 +13,6 @@ import {
   getProducer,
   logger,
 } from '../lib/utils';
-import { Producer } from 'kafkajs';
 
 const limit = 10;
 const workDate = '2023-09-02';
@@ -25,7 +24,7 @@ const pathUrls = [
   // '/api/loadMoreCategories?offset={offset}&categories=court',
   // '/api/loadMoreOption?offset={offset}&option=politics',
 ];
-let producer: Producer;
+let producer: any;
 beforeAll(() => {
   producer = getProducer();
   producer.connect();

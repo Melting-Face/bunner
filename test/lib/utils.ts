@@ -1,4 +1,6 @@
-import { Kafka } from 'kafkajs';
+import {
+  Kafka, Partitioners, Producer,
+} from 'kafkajs';
 import {
   createLogger,
   format,
@@ -9,9 +11,12 @@ async function delay(num: number) {
   await new Promise((resolve) => setTimeout(resolve, num));
 }
 
-function getProducer() {
-  const kafka = new Kafka({ brokers: ['127.0.0.1:29092'] });
-  const producer = kafka.producer();
+function getProducer(): Producer {
+  const kafka = new Kafka({
+    clientId: 'my-kafka',
+    brokers: ['localhost:29092'],
+  });
+  const producer = kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner });
   return producer;
 }
 
