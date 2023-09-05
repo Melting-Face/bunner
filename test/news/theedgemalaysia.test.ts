@@ -90,15 +90,19 @@ test('consume', async () => {
 }, 60000);
 
 afterAll(async () => {
-  const producer = kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner });
-  await producer.connect();
-  await producer.send({
-    topic: 'news',
-    messages: [
-      {
-        key: '0', value: 'test', partition: 0,
-      },
-    ],
+  const producer = kafka.producer({
+    transactionalId: 'my-transactional-producer',
+    maxInFlightRequests: 1,
+    idempotent: true,
   });
-  await producer.disconnect();
+  const transaction = await producer.transaction();
+  try {
+    await transaction.send({
+      topic: 'news',
+      messages: [{ value: 'test' }],
+    });
+    await transaction.commit();
+  } catch (e) {
+    await transaction.abort();
+  }
 });
