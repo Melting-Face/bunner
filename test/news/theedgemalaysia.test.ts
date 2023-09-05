@@ -5,15 +5,15 @@ import {
   test,
 } from 'bun:test';
 import { load } from 'cheerio';
-import { Transaction } from 'kafkajs';
 import moment from 'moment';
 
 import request from '../lib/request';
 import {
   delay,
+  getProducer,
   logger,
-  producer,
 } from '../lib/utils';
+import { Producer } from 'kafkajs';
 
 const limit = 10;
 const workDate = '2023-09-02';
@@ -25,8 +25,10 @@ const pathUrls = [
   // '/api/loadMoreCategories?offset={offset}&categories=court',
   // '/api/loadMoreOption?offset={offset}&option=politics',
 ];
-beforeAll(async () => {
-  await producer.connect();
+let producer: Producer;
+beforeAll(() => {
+  producer = getProducer();
+  producer.connect();
 });
 
 test('produce', async () => {
