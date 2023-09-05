@@ -27,7 +27,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://localhost:29092'
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-    image: confluentinc/cp-kafka:7.5.0
+    image: confluentinc/cp-kafka:7.3.3
     ports:
       - "29092:29092"
     restart: always

@@ -24,10 +24,10 @@ const pathUrls = [
   // '/api/loadMoreCategories?offset={offset}&categories=court',
   // '/api/loadMoreOption?offset={offset}&option=politics',
 ];
-let producer: any;
-beforeAll(() => {
-  producer = getProducer();
-  producer.connect();
+
+const producer: any = getProducer();
+beforeAll(async () => {
+  await producer.connect();
 });
 
 test('produce', async () => {

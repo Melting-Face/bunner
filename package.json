@@ -20,7 +20,7 @@
   "dependencies": {
     "@prisma/client": "^5.2.0",
     "cheerio": "^1.0.0-rc.12",
-    "kafkajs": "^2.2.4",
+    "kafkajs": "1.16.0",
     "moment": "^2.29.4",
     "mongoose": "^7.5.0",
     "nodejs-polars": "^0.8.1",

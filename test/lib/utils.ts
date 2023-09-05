@@ -16,7 +16,9 @@ function getProducer(): Producer {
     clientId: 'my-kafka',
     brokers: ['localhost:29092'],
   });
-  const producer = kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner });
+  const producer = kafka.producer({
+    createPartitioner: Partitioners.LegacyPartitioner
+  });
   return producer;
 }
 
