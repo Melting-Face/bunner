@@ -51,23 +51,16 @@ const fileNames = [
 //   }
 // });
 
-test('read csv', async () => {
-  const workbook = xlsx.readFile('202001_02_expo.csv');
-  const sheetName = workbook.SheetNames[0];
-  logger.info(sheetName);
-  expect(sheetName).toBeTruthy();
-  const sheet = workbook.Sheets[sheetName];
-  const data = xlsx.utils.sheet_to_json(sheet, { header: 1 });
-  logger.info(data.shift());
-  // logger.info(JSON.stringify(sheet, null, 2));
-});
-
-// test('csv with parquetjs', async () => {
-//   for (const fileName of fileNames) {
-//     logger.info(fileName);
-//     const sheet = xlsx.read(bufferWithFileName[fileName]);
-//     const data = xlsx.utils.sheet_to_json(sheet, { header: 1 });
-//     logger.info(data);
-//     expect(data).toBeTruthy();
-//   }
-// }, 100000);
+test('csv with parquetjs', async () => {
+  for (const fileName of fileNames) {
+    logger.info(fileName);
+    const workbook = xlsx.read(bufferWithFileName[fileName]);
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    const data = xlsx.utils.sheet_to_json(sheet, { header: 1 });
+    const headers = data.shift();
+    logger.info(headers);
+    logger.info(typeof headers);
+    expect(data).toBeTruthy();
+  }
+}, 100000);
