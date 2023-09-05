@@ -23,6 +23,8 @@
     "kafkajs": "^2.2.4",
     "moment": "^2.29.4",
     "mongoose": "^7.5.0",
+    "nodejs-polars": "^0.8.1",
+    "parquetjs": "^0.11.2",
     "pdfjs-dist": "^3.10.111",
     "puppeteer": "^21.1.1",
     "puppeteer-core": "^21.1.1",

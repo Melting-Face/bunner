@@ -18,7 +18,7 @@ services:
     command:
       - |
         /etc/confluent/docker/run
-        kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic news
+        kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic news
     depends_on:
       - zookeeper
     entrypoint: ['sh', '-c']
@@ -26,7 +26,8 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092'
+      KAFKA_LISTENERS: 'PLAINTEXT://:29092'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://:29092'
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
     image: confluentinc/cp-kafka:latest
     ports:

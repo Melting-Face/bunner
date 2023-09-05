@@ -5,7 +5,8 @@ import {
   transports,
 } from 'winston';
 
-const kafka = new Kafka({ brokers: ['localhost:29092'] });
+const kafka = new Kafka({ brokers: ['127.0.0.1:29092'] });
+const producer = kafka.producer();
 
 async function delay(num: number) {
   await new Promise((resolve) => setTimeout(resolve, num));
@@ -29,6 +30,6 @@ const logger = createLogger({
 
 export {
   delay,
-  kafka,
   logger,
+  producer,
 };

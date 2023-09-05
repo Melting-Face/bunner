@@ -1,17 +1,18 @@
 import {
   afterAll,
+  beforeAll,
   expect,
   test,
 } from 'bun:test';
 import { load } from 'cheerio';
-import { Partitioners } from 'kafkajs';
+import { Transaction } from 'kafkajs';
 import moment from 'moment';
 
 import request from '../lib/request';
 import {
   delay,
-  kafka,
   logger,
+  producer,
 } from '../lib/utils';
 
 const limit = 10;
@@ -24,6 +25,9 @@ const pathUrls = [
   // '/api/loadMoreCategories?offset={offset}&categories=court',
   // '/api/loadMoreOption?offset={offset}&option=politics',
 ];
+beforeAll(async () => {
+  await producer.connect();
+});
 
 test('produce', async () => {
   for (const pathUrl of pathUrls) {
@@ -60,7 +64,6 @@ test('produce', async () => {
   }
 }, 60000);
 
-const messages: any = [];
 test('consume', async () => {
   for (const { date, url } of newsList) {
     logger.info(`Fetching ... ${url}`);
@@ -76,33 +79,22 @@ test('consume', async () => {
     const summary = $('meta[property="og:description"]').attr('content');
     const image = $('meta[property="og:image"]').attr('content');
     const body = bodyList.join('\n');
-    messages.push({
+    const news = {
       date,
       body,
       image,
       summary,
       title,
       url,
+    };
+    await producer.send({
+      topic: 'news',
+      messages: [{ value: JSON.stringify(news) }],
     });
+    await delay(1000);
   }
-
-  expect(messages).toBeTruthy();
 }, 60000);
 
 afterAll(async () => {
-  const producer = kafka.producer({
-    transactionalId: 'my-transactional-producer',
-    maxInFlightRequests: 1,
-    idempotent: true,
-  });
-  const transaction = await producer.transaction();
-  try {
-    await transaction.send({
-      topic: 'news',
-      messages: [{ value: 'test' }],
-    });
-    await transaction.commit();
-  } catch (e) {
-    await transaction.abort();
-  }
+  await producer.disconnect();
 });
