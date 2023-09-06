@@ -14,8 +14,9 @@ import {
   logger,
 } from '../lib/utils';
 
+const source = 'theedgemalaysia';
 const limit = 10;
-const workDate = '2023-09-02';
+const workDate = '2023-09-06';
 const host = 'https://theedgemalaysia.com';
 const newsList: any = [];
 const pathUrls = [
@@ -87,6 +88,7 @@ test('consume', async () => {
       summary,
       title,
       url,
+      source,
     };
     await producer.send({
       topic: 'news',
@@ -94,7 +96,7 @@ test('consume', async () => {
     });
     await delay(1000);
   }
-}, 60000);
+}, 260000);
 
 afterAll(async () => {
   await producer.disconnect();
