@@ -25,6 +25,9 @@ def consume():
         kafka_config_id="kafka",
         topics=['news'],
         apply_function=consume_function,
+        poll_timeout=5,
+        max_messages=5,
+        max_batch_size=5,
     )
 
 consume()
