@@ -8,7 +8,7 @@ from constants import BUN_TEST
 logger = logging.getLogger(__name__)
 
 with DAG(
-    dag_id="unzip",
+    dag_id="execute_fao",
     schedule=None,
     start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
     tags=["bun"],
