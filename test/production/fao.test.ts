@@ -1,5 +1,9 @@
+import {
+  Readable,
+  Writable,
+} from 'stream';
+import { pipeline } from 'stream/promises';
 import fs from 'fs/promises';
-import { Writable } from 'stream';
 
 import {
   expect,
@@ -7,6 +11,7 @@ import {
 } from 'bun:test';
 import {
   ParquetSchema,
+  ParquetTransformer,
   ParquetWriter,
 } from 'parquetjs';
 
@@ -16,7 +21,7 @@ import {
 import { logger } from '../lib/utils';
 
 const fileNames = [
-  'Prices_E_All_Data_(Normalized)',
+  // 'Prices_E_All_Data_(Normalized)',
   'Production_Crops_Livestock_E_All_Data_(Normalized)',
 ];
 
@@ -59,6 +64,9 @@ async function csvParser(buffer: Buffer, separator: string = ',', rowSeparator: 
   const textArray = csvContent.split(rowSeparator);
   const headers = textArray[0].split(separator);
   for (const text of textArray.slice(1)) {
+    if (!text) {
+      continue;
+    }
     const items = text.replace(/^["]|["]$/g, '').split(`"${separator}"`);
     const entry: any = {};
     for (const i in items) {
@@ -89,28 +97,53 @@ test('csv parse and convert to json - 1', async () => {
     logger.info(fileName);
     const buffer = await fs.readFile(`${fileName}.csv`);
     const items = await csvParser(buffer);
-    expect(items).toBeTruthy();
     const schema = await columnToSchema(items);
     // logger.info(JSON.stringify(items.slice(0, 10), null, 2));
-    const parquetChunks: any = [];
+    let writeBuffer = Buffer.alloc(0);
     const writableStream = new Writable({
       write(chunk, _encoding, callback) {
-        parquetChunks.push(chunk);
+        writeBuffer = Buffer.concat([writeBuffer, chunk]);
         callback();
       },
     });
-    const writer = await ParquetWriter.openStream(schema, writableStream);
-    writer.setRowGroupSize(2048);
-    logger.info('Start to write row');
-    let count = 1;
-    await Promise.all(items.map(async (item) => {
-      logger.info(`Write row ${count}`);
-      await writer.appendRow(item);
-      count += 1;
-    }));
-    writer.close();
-    logger.info('End to write row');
-    await fs.writeFile(`${fileName}.parquet`, Buffer.concat(parquetChunks));
+    class JSONStream extends Readable {
+      constructor(array) {
+        super({ objectMode: true });
+        this.array = array;
+        this.index = 0;
+      }
+
+      _read() {
+        if (this.index < this.array.length) {
+          const data = this.array[this.index++];
+          this.push(data);
+        } else {
+          this.push(null); // No more data
+        }
+      }
+    }
+    // jsonStream.on('data', (data) => {
+    //   console.log(data);
+    // });
+    // for (const item of items) {
+    //   reader.push(item);
+    // }
+    // reader.push(null);
+    // logger.info('Start to write row');
+    await pipeline(
+      new JSONStream(items),
+      new ParquetTransformer(schema),
+      writableStream,
+    );
+    // .pipe(
+    //   (chunk: any) => Buffer.concat([writeBuffer, chunk])
+    // );
+    // logger.info('End to write row');
+    // logger.info('Start to write file');
+    logger.info(`Byte length: ${Buffer.byteLength(writeBuffer)}`);
+    expect(Buffer.byteLength(writeBuffer)).toBeTruthy();
+    await fs.writeFile(`${fileName}.parquet`, writeBuffer);
+    // logger.info('End to write file');
   }
 }, 1000000);
 
