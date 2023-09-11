@@ -36,6 +36,7 @@
     "no-unused-expressions": 2,
     "no-extend-native": 0,
     "import/no-import-module-exports": 0,
+    "no-underscore-dangle": 0,
     "semi": [
       "error",
       "always"
