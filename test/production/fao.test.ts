@@ -1,9 +1,9 @@
+import fs from 'fs/promises';
 import {
   Readable,
   Writable,
 } from 'stream';
 import { pipeline } from 'stream/promises';
-import fs from 'fs/promises';
 
 import {
   expect,
@@ -99,10 +99,10 @@ test('csv parse and convert to json - 1', async () => {
     const items = await csvParser(buffer);
     const schema = await columnToSchema(items);
     // logger.info(JSON.stringify(items.slice(0, 10), null, 2));
-    let writeBuffer = Buffer.alloc(0);
+    const chunks: any = [];
     const writableStream = new Writable({
       write(chunk, _encoding, callback) {
-        writeBuffer = Buffer.concat([writeBuffer, chunk]);
+        chunks.push(chunk);
         callback();
       },
     });
@@ -130,16 +130,19 @@ test('csv parse and convert to json - 1', async () => {
     // }
     // reader.push(null);
     // logger.info('Start to write row');
+    console.time('test');
     await pipeline(
       new JSONStream(items),
       new ParquetTransformer(schema),
       writableStream,
     );
+    console.timeEnd('test');
     // .pipe(
     //   (chunk: any) => Buffer.concat([writeBuffer, chunk])
     // );
     // logger.info('End to write row');
     // logger.info('Start to write file');
+    const writeBuffer = Buffer.concat(chunks);
     logger.info(`Byte length: ${Buffer.byteLength(writeBuffer)}`);
     expect(Buffer.byteLength(writeBuffer)).toBeTruthy();
     await fs.writeFile(`${fileName}.parquet`, writeBuffer);
