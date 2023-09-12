@@ -21,9 +21,9 @@ const host = 'https://theedgemalaysia.com';
 const newsList: any = [];
 const pathUrls = [
   '/api/loadMoreCategories?offset={offset}&categories=economy',
-  // '/api/loadMoreCategories?offset={offset}&categories=corporate',
-  // '/api/loadMoreCategories?offset={offset}&categories=court',
-  // '/api/loadMoreOption?offset={offset}&option=politics',
+  '/api/loadMoreCategories?offset={offset}&categories=corporate',
+  '/api/loadMoreCategories?offset={offset}&categories=court',
+  '/api/loadMoreOption?offset={offset}&option=politics',
 ];
 
 const producer: any = getProducer();
