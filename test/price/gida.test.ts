@@ -16,28 +16,71 @@ import {
 } from '../lib/utils';
 
 const date = '2022-09-11';
-const urls = [
-  'https://tarim.ibb.istanbul/tr/istatistik/178/hal-fiyatlari.html',
-  'https://tarim.ibb.istanbul/tr/istatistik/124/hal-fiyatlari.html',
+const params = [
+  {
+    listUrl: 'https://tarim.ibb.istanbul/tr/istatistik/178/hal-fiyatlari.html',
+    categories: [1, 2, 3, 4],
+  },
+  {
+    listUrl: 'https://tarim.ibb.istanbul/tr/istatistik/124/hal-fiyatlari.html',
+    categories: [5, 6, 7],
+  },
 ];
 
-test('produce', async () => {
-  for (const url of urls) {
-    const response = await request(url);
-    const $ = load(response);
-    $('script[type="text/javascript"]:not([src])').each((_i, script) => {
-      const scriptContent = $(script).text().trim();
-      if (!scriptContent.includes('ButtonEvents')) {
-        return true;
-      }
+const list: Array<string> = [];
 
-      const scriptRows = scriptContent.split('\n');
-      for (const row of scriptRows) {
-        if (row.includes('obj.tVal')) {
-          logger.info(row);
-        }
+function getParamsFromScript(html: string) {
+  let tVal = '';
+  let tPas = '';
+  let tUsr = '';
+  let HalTurId = '';
+
+  const $ = load(html);
+  $('script[type="text/javascript"]:not([src])').each((_i, script) => {
+    const scriptContent = $(script).text().trim();
+    if (!scriptContent.includes('ButtonEvents')) {
+      return true;
+    }
+
+    const scriptRows = scriptContent.split('\n');
+    for (const row of scriptRows) {
+      if (row.includes('obj.tVal')) {
+        [, tVal] = row.match(/["](\S+)["]/) || [];
       }
-    });
+      if (row.includes('obj.tPas')) {
+        [, tPas] = row.match(/["](\S+)["]/) || [];
+      }
+      if (row.includes('obj.tUsr')) {
+        [, tUsr] = row.match(/["](\S+)["]/) || [];
+      }
+      if (row.includes('obj.HalTurId')) {
+        [, HalTurId] = row.match(/["](\S+)["]/) || [];
+      }
+    }
+  });
+  return [tVal, tPas, tUsr, HalTurId];
+}
+
+test('produce', async () => {
+  for (const { categories, listUrl } of params) {
+    const response = await request(listUrl);
+    const [tVal, tPas, tUsr, HalTurId] = getParamsFromScript(response);
+    const url = new URL('https://tarim.ibb.istanbul/inc/halfiyatlari/gunluk_fiyatlar.asp');
+    url.searchParams.set('tarih', date);
+    url.searchParams.set('tVal', tVal);
+    url.searchParams.set('tPas', tPas);
+    url.searchParams.set('tUsr', tUsr);
+    url.searchParams.set('HalTurId', HalTurId);
+    for (const category of categories) {
+      url.searchParams.set('kategori', `${category}`);
+      list.push(url.toString());
+    }
     await delay(1000);
   }
 }, 30000);
+
+test('consume', async () => {
+  for (const pageUrl of list) {
+    logger.info(pageUrl);
+  }
+});
