@@ -19,8 +19,10 @@
   },
   "dependencies": {
     "@prisma/client": "^5.2.0",
+    "@types/lodash": "^4.14.198",
     "cheerio": "^1.0.0-rc.12",
     "kafkajs": "1.16.0",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "mongoose": "^7.5.0",
     "nodejs-polars": "^0.8.1",
