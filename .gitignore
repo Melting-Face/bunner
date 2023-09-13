@@ -5,3 +5,4 @@ standalone_admin_password.txt
 airflow-webserver.pid
 airflow.db
 **/__pycache__/**
+**/*.log
