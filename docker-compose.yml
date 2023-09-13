@@ -54,6 +54,7 @@ services:
       KSQL_BOOTSTRAP_SERVERS: broker:9092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+    platform: linux/amd64
 
   ksqldb-cli:
     image: confluentinc/ksqldb-cli:0.29.0
@@ -63,3 +64,4 @@ services:
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
+    platform: linux/amd64
