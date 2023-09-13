@@ -1,21 +1,17 @@
 import {
-  afterAll,
-  beforeAll,
   expect,
   test,
 } from 'bun:test';
 import { load } from 'cheerio';
-import { range } from 'lodash';
 import { insert } from 'sql-bricks';
 
 import request from '../lib/request';
 
 import {
-  delay,
-  logger,
+  delay, logger,
 } from '../lib/utils';
 
-const date = '2022-09-11';
+const date = '2023-09-11';
 const params = [
   {
     listUrl: 'https://tarim.ibb.istanbul/tr/istatistik/178/hal-fiyatlari.html',
@@ -29,7 +25,7 @@ const params = [
 
 const list: Array<string> = [];
 
-function getParamsFromScript(html: string) {
+function getUrlParams(html: string) {
   let tVal = '';
   let tPas = '';
   let tUsr = '';
@@ -64,7 +60,7 @@ function getParamsFromScript(html: string) {
 test('produce', async () => {
   for (const { categories, listUrl } of params) {
     const response = await request(listUrl);
-    const [tVal, tPas, tUsr, HalTurId] = getParamsFromScript(response);
+    const [tVal, tPas, tUsr, HalTurId] = getUrlParams(response);
     const url = new URL('https://tarim.ibb.istanbul/inc/halfiyatlari/gunluk_fiyatlar.asp');
     url.searchParams.set('tarih', date);
     url.searchParams.set('tVal', tVal);
@@ -81,6 +77,15 @@ test('produce', async () => {
 
 test('consume', async () => {
   for (const pageUrl of list) {
-    logger.info(pageUrl);
+    const response = await request(pageUrl);
+    const $ = load(response);
+    $('tr').slice(1).each((_i, tr) => {
+      const td = $(tr).find('td');
+      const product = $(td).eq(0).text().trim();
+      const unit = $(td).eq(1).text().trim();
+      const priceMin = $(td).eq(2).text().replace(',', '.').replace(/[^\d.]/, '').trim();
+      const priceMax = $(td).eq(3).text().replace(',', '.').replace(/[^\d.]/, '').trim();
+      logger.info(`${product}, ${unit}, ${priceMin}, ${priceMax} ${pageUrl}`);
+    });
   }
-});
+}, 20000);
