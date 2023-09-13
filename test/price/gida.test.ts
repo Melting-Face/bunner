@@ -77,6 +77,7 @@ test('produce', async () => {
 
 test('consume', async () => {
   for (const pageUrl of list) {
+    logger.info(pageUrl);
     const response = await request(pageUrl);
     const $ = load(response);
     $('tr').slice(1).each((_i, tr) => {
@@ -88,4 +89,4 @@ test('consume', async () => {
       logger.info(`${product}, ${unit}, ${priceMin}, ${priceMax} ${pageUrl}`);
     });
   }
-}, 20000);
+}, 30000);
