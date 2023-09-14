@@ -3,43 +3,16 @@ import {
   Readable,
   Writable,
 } from 'stream';
-import { pipeline } from 'stream/promises';
 
 import {
   beforeAll,
   expect,
   test,
 } from 'bun:test';
-import pl from 'nodejs-polars';
-import {
-  ParquetSchema,
-  ParquetTransformer,
-  ParquetWriter,
-} from 'parquetjs';
+import unzipper from 'unzipper';
 
+import request from '../lib/request';
 import { logger } from '../lib/utils';
-
-class JSONStream extends Readable {
-  array: Array<object>;
-
-  index: number;
-
-  constructor(array: Array<object>) {
-    super({ objectMode: true });
-    this.array = array;
-    this.index = 0;
-  }
-
-  _read() {
-    if (this.index < this.array.length) {
-      const data = this.array[this.index];
-      this.push(data);
-      this.index += 1;
-    } else {
-      this.push(null); // No more data
-    }
-  }
-}
 
 const fileNames = [
   'Prices_E_All_Data_(Normalized)',
@@ -52,20 +25,56 @@ interface BufferWithName {
 
 const bufferWithName: BufferWithName = {};
 
+function bulkCsvToJson(
+  data: string | Buffer,
+  columnSeparator = ',',
+  rowSeparator = '\n',
+  headerSeparator = ',',
+  preprocessForRow = ((row: string) => row),
+) {
+  if (!data) {
+    throw new Error('Data is required');
+  }
+
+  if (typeof data !== 'string' && !Buffer.isBuffer(data)) {
+    throw new Error('Type Error: Only Buffer or String is available');
+  }
+
+  const jsonArray = [];
+  const textArray = data.split(rowSeparator);
+  const headers = textArray[0].split(headerSeparator);
+  for (const text of textArray.slice(1)) {
+    if (!text) {
+      continue;
+    }
+
+    const texts = preprocessForRow(text).split(columnSeparator);
+    const entry: any = {};
+    for (const i in texts) {
+      entry[headers[i]] = texts[i];
+    }
+    jsonArray.push(entry);
+  }
+  return jsonArray;
+}
+
 beforeAll(async () => {
   for (const fileName of fileNames) {
+    try {
+      await fs.access(`${fileName}.csv`);
+    } catch (e) {
+      const response = await request({
+        type: 'buffer',
+        url: `https://fenixservices.fao.org/faostat/static/bulkdownloads${fileName}.zip`,
+      });
+      const directory = await unzipper.Open.buffer(response);
+      for (const file of directory.files) {
+        const fileBuffer = await file.buffer();
+        await fs.writeFile(`${fileName}.csv`, fileBuffer);
+      }
+    }
     const buffer = await fs.readFile(`${fileName}.csv`);
     bufferWithName[fileName] = buffer;
-  }
-});
-
-test('nodejs-polars', async () => {
-  for (const fileName of fileNames) {
-    console.time(`${fileName}`);
-    const df = pl.readCSV(bufferWithName[fileName]);
-    console.timeEnd(`${fileName}`);
-    const buffer = df.writeParquet({ compression: 'uncompressed' });
-    await fs.writeFile(`${fileName}-2.parquet`, buffer);
   }
 });
 
@@ -90,71 +99,5 @@ async function csvParser(buffer: Buffer, separator: string = ',', rowSeparator: 
   return jsonArray;
 }
 
-async function columnToSchema(items: any) {
-  logger.info('column parsing start');
-  const schema: any = {};
-
-  for (const item of items) {
-    for (const column in item) {
-      schema[column] = { type: 'UTF8' };
-    }
-  }
-
-  logger.info('column parsing end');
-  return new ParquetSchema(schema);
-}
-
-test('parquetjs-pipeline', async () => {
-  for (const fileName of fileNames) {
-    logger.info(fileName);
-    const buffer = bufferWithName[fileName];
-    const items = await csvParser(buffer);
-    const schema = await columnToSchema(items);
-    const chunks: any = [];
-    const writableStream = new Writable({
-      write(chunk, _encoding, callback) {
-        chunks.push(chunk);
-        callback();
-      },
-    });
-    console.time(`${fileName}`);
-    await pipeline(
-      new JSONStream(items),
-      new ParquetTransformer(schema),
-      writableStream,
-    );
-    console.timeEnd(`${fileName}`);
-    const writeBuffer = Buffer.concat(chunks);
-    logger.info(`Byte length: ${Buffer.byteLength(writeBuffer)}`);
-    expect(Buffer.byteLength(writeBuffer)).toBeTruthy();
-    await fs.writeFile(`${fileName}.parquet`, writeBuffer);
-    // logger.info('End to write file');
-  }
-}, 1000000);
-
-test('parquetjs-for_statement', async () => {
-  for (const fileName of fileNames) {
-    logger.info(fileName);
-    const buffer = bufferWithName[fileName];
-    const items = await csvParser(buffer);
-    const schema = await columnToSchema(items);
-    const chunks: any = [];
-    const writableStream = new Writable({
-      write(chunk, _encoding, callback) {
-        chunks.push(chunk);
-        callback();
-      },
-    });
-    const writer = await ParquetWriter.openStream(schema, writableStream);
-    console.time(`${fileName}`);
-    for (const item of items) {
-      await writer.appendRow(item);
-    }
-    console.timeEnd(`${fileName}`);
-    const writeBuffer = Buffer.concat(chunks);
-    logger.info(`Byte length: ${Buffer.byteLength(writeBuffer)}`);
-    expect(Buffer.byteLength(writeBuffer)).toBeTruthy();
-    await fs.writeFile(`${fileName}.parquet`, writeBuffer);
-    // logger.info('End to write file');
-  }
-}, 1000000);
+test('csv parsing', async () => {
+});
