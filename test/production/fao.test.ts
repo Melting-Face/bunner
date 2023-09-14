@@ -6,7 +6,6 @@ import {
 
 import {
   beforeAll,
-  expect,
   test,
 } from 'bun:test';
 import unzipper from 'unzipper';
@@ -40,22 +39,37 @@ function bulkCsvToJson(
     throw new Error('Type Error: Only Buffer or String is available');
   }
 
-  const jsonArray: any = [];
-  // const textArray = data.split(rowSeparator);
-  // const headers = textArray[0].split(headerSeparator);
-  // for (const text of textArray.slice(1)) {
-  //   if (!text) {
-  //     continue;
-  //   }
-  //
-  //   const texts = preprocessForRow(text).split(columnSeparator);
-  //   const entry: any = {};
-  //   for (const i in texts) {
-  //     entry[headers[i]] = texts[i];
-  //   }
-  //   jsonArray.push(entry);
-  // }
-  return jsonArray;
+  const entries: any = [];
+  const reader = new Readable();
+  reader.on('readable', () => {
+    let row = '';
+    let text = '';
+    let chunk = reader.read(100);
+
+    const headers: Array<string> = [];
+    while (chunk !== null) {
+      text += chunk;
+      chunk = reader.read(100);
+      // if (text.includes(rowSeparator)) {
+      //   [row, text] = text.split(rowSeparator);
+      //   if (!row) {
+      //     continue;
+      //   }
+      //   if (!headers.length) {
+      //     headers.push(...row.split(headerSeparator));
+      //     continue;
+      //   }
+      //   const entry: any = {};
+      //   const columns = preprocessForRow(row).split(columnSeparator);
+      //   for (const index in columns) {
+      //     entry[headers[index]] = columns[index];
+      //   }
+      //   entries.push(entry);
+      // }
+    }
+  });
+  reader.push(data);
+  return entries;
 }
 
 beforeAll(async () => {
@@ -95,8 +109,10 @@ test('csv parsing', () => {
     logger.info('Get Buffer data');
     logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
 
-    const entries = bulkCsvToJson(buffer);
+    const entries = bulkCsvToJson(buffer, '","', '\r\n', ',', ((row) => row.replace(/^["]|["]$/g, '')));
     logger.info('Convert csv');
     logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
+
+    logger.info(JSON.stringify(entries.slice(10), null, 2));
   }
-});
+}, 30000);
