@@ -78,26 +78,8 @@ beforeAll(async () => {
   }
 });
 
-async function csvParser(buffer: Buffer, separator: string = ',', rowSeparator: string = '\r\n') {
-  logger.info('csv parsing start');
-  const jsonArray = [];
-  const csvContent = buffer.toString();
-  const textArray = csvContent.split(rowSeparator);
-  const headers = textArray[0].split(separator);
-  for (const text of textArray.slice(1)) {
-    if (!text) {
-      continue;
-    }
-    const items = text.replace(/^["]|["]$/g, '').split(`"${separator}"`);
-    const entry: any = {};
-    for (const i in items) {
-      entry[headers[i]] = items[i];
-    }
-    jsonArray.push(entry);
-  }
-  logger.info('csv parsing end');
-  return jsonArray;
-}
-
 test('csv parsing', async () => {
+  for (const fileName of fileNames) {
+    logger.info(`${fileName} Memory: ${process.memoryUsage().heapTotal}`);
+  }
 });
