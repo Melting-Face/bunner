@@ -40,21 +40,21 @@ function bulkCsvToJson(
     throw new Error('Type Error: Only Buffer or String is available');
   }
 
-  const jsonArray = [];
-  const textArray = data.split(rowSeparator);
-  const headers = textArray[0].split(headerSeparator);
-  for (const text of textArray.slice(1)) {
-    if (!text) {
-      continue;
-    }
-
-    const texts = preprocessForRow(text).split(columnSeparator);
-    const entry: any = {};
-    for (const i in texts) {
-      entry[headers[i]] = texts[i];
-    }
-    jsonArray.push(entry);
-  }
+  const jsonArray: any = [];
+  // const textArray = data.split(rowSeparator);
+  // const headers = textArray[0].split(headerSeparator);
+  // for (const text of textArray.slice(1)) {
+  //   if (!text) {
+  //     continue;
+  //   }
+  //
+  //   const texts = preprocessForRow(text).split(columnSeparator);
+  //   const entry: any = {};
+  //   for (const i in texts) {
+  //     entry[headers[i]] = texts[i];
+  //   }
+  //   jsonArray.push(entry);
+  // }
   return jsonArray;
 }
 
@@ -63,23 +63,40 @@ beforeAll(async () => {
     try {
       await fs.access(`${fileName}.csv`);
     } catch (e) {
+      const url = `https://fenixservices.fao.org/faostat/static/bulkdownloads${fileName}.zip`;
+      logger.info(`Fetching ... ${url}`);
       const response = await request({
+        url,
         type: 'buffer',
-        url: `https://fenixservices.fao.org/faostat/static/bulkdownloads${fileName}.zip`,
       });
       const directory = await unzipper.Open.buffer(response);
       for (const file of directory.files) {
-        const fileBuffer = await file.buffer();
-        await fs.writeFile(`${fileName}.csv`, fileBuffer);
+        const { path } = file;
+        if (`${fileName}.csv` === path) {
+          const fileBuffer = await file.buffer();
+          await fs.writeFile(path, fileBuffer);
+        }
       }
     }
+    const stats = await fs.stat(`${fileName}.csv`);
+    logger.info(`${fileName} file size`);
+    logger.info(`${stats.size / 1024 / 1024} MB`);
     const buffer = await fs.readFile(`${fileName}.csv`);
     bufferWithName[fileName] = buffer;
   }
 });
 
-test('csv parsing', async () => {
+test('csv parsing', () => {
   for (const fileName of fileNames) {
-    logger.info(`${fileName} Memory: ${process.memoryUsage().heapTotal}`);
+    logger.info(`${fileName}`);
+    logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
+    const buffer = bufferWithName[fileName];
+
+    logger.info('Get Buffer data');
+    logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
+
+    const entries = bulkCsvToJson(buffer);
+    logger.info('Convert csv');
+    logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
   }
 });
