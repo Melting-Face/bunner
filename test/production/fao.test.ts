@@ -1,11 +1,10 @@
 import fs from 'fs/promises';
-import {
-  Readable,
-  Writable,
-} from 'stream';
+import { Duplex } from 'stream';
+import { pipeline } from 'stream/promises';
 
 import {
   beforeAll,
+  expect,
   test,
 } from 'bun:test';
 import unzipper from 'unzipper';
@@ -24,7 +23,7 @@ interface BufferWithName {
 
 const bufferWithName: BufferWithName = {};
 
-function bulkCsvToJson(
+async function bulkCsvToJson(
   data: string | Buffer,
   columnSeparator = ',',
   rowSeparator = '\n',
@@ -39,37 +38,22 @@ function bulkCsvToJson(
     throw new Error('Type Error: Only Buffer or String is available');
   }
 
-  const entries: any = [];
-  const reader = new Readable();
-  reader.on('readable', () => {
-    let row = '';
-    let text = '';
-    let chunk = reader.read(100);
-
-    const headers: Array<string> = [];
-    while (chunk !== null) {
-      text += chunk;
-      chunk = reader.read(100);
-      // if (text.includes(rowSeparator)) {
-      //   [row, text] = text.split(rowSeparator);
-      //   if (!row) {
-      //     continue;
-      //   }
-      //   if (!headers.length) {
-      //     headers.push(...row.split(headerSeparator));
-      //     continue;
-      //   }
-      //   const entry: any = {};
-      //   const columns = preprocessForRow(row).split(columnSeparator);
-      //   for (const index in columns) {
-      //     entry[headers[index]] = columns[index];
-      //   }
-      //   entries.push(entry);
-      // }
-    }
+  const buffer = Buffer.from(data);
+  const duplex = new Duplex({
+    readableObjectMode: true,
+    writableObjectMode: true,
+    read(size) {
+      
+    },
+    write(chunk, encoding, callback) {
+      logger.info(chunk);
+      callback();
+    },
   });
-  reader.push(data);
-  return entries;
+  duplex.push(data);
+  duplex.push(null);
+  await pipeline(duplex);
+  return [];
 }
 
 beforeAll(async () => {
@@ -100,7 +84,7 @@ beforeAll(async () => {
   }
 });
 
-test('csv parsing', () => {
+test('csv parsing', async () => {
   for (const fileName of fileNames) {
     logger.info(`${fileName}`);
     logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
@@ -109,7 +93,8 @@ test('csv parsing', () => {
     logger.info('Get Buffer data');
     logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
 
-    const entries = bulkCsvToJson(buffer, '","', '\r\n', ',', ((row) => row.replace(/^["]|["]$/g, '')));
+    const entries = await bulkCsvToJson(buffer, '","', '\r\n', ',', ((row) => row.replace(/^["]|["]$/g, '')));
+    // expect(entries.length).toBeTruthy();
     logger.info('Convert csv');
     logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
 

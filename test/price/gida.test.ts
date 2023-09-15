@@ -1,17 +1,18 @@
-import {
-  expect,
-  test,
-} from 'bun:test';
+import { createHash } from 'crypto';
+
+import { test } from 'bun:test';
 import { load } from 'cheerio';
 import { insert } from 'sql-bricks';
 
 import request from '../lib/request';
 
 import {
-  delay, logger,
+  delay,
+  logger,
 } from '../lib/utils';
 
-const date = '2023-09-11';
+const SOURCE = 'Gida';
+const DATE = '2023-09-11';
 const params = [
   {
     listUrl: 'https://tarim.ibb.istanbul/tr/istatistik/178/hal-fiyatlari.html',
@@ -56,13 +57,42 @@ function getUrlParams(html: string) {
   });
   return [tVal, tPas, tUsr, HalTurId];
 }
+// beforeAll(async () => {
+//   const ksql = `
+// CREATE TABLE IF NOT EXISTS PRICES (
+//     HASH VARCHAR PRIMARY KEY,
+//     SOURCE VARCHAR,
+//     DATE VARCHAR,
+//     UNIT VARCHAR,
+//     PAGEURL VARCHAR,
+//     PRICEAVG DOUBLE,
+//     PRICEMAX DOUBLE,
+//     PRICEMIN DOUBLE,
+//     PRODUCT VARCHAR
+// ) WITH (
+//     kafka_topic='prices',
+//     value_format='json',
+//     partitions=1
+// );
+// `;
+//   const response = await request({
+//     url: 'http://localhost:8088/ksql',
+//     method: 'POST',
+//     headers: { Accept: 'application/vnd.ksql.v1+json' },
+//     body: {
+//       ksql,
+//       streamsProperties: {},
+//     },
+//   });
+//   logger.info(`Response: ${response}`);
+// });
 
 test('produce', async () => {
   for (const { categories, listUrl } of params) {
     const response = await request(listUrl);
     const [tVal, tPas, tUsr, HalTurId] = getUrlParams(response);
     const url = new URL('https://tarim.ibb.istanbul/inc/halfiyatlari/gunluk_fiyatlar.asp');
-    url.searchParams.set('tarih', date);
+    url.searchParams.set('tarih', DATE);
     url.searchParams.set('tVal', tVal);
     url.searchParams.set('tPas', tPas);
     url.searchParams.set('tUsr', tUsr);
@@ -76,17 +106,40 @@ test('produce', async () => {
 }, 30000);
 
 test('consume', async () => {
-  for (const pageUrl of list) {
-    logger.info(pageUrl);
-    const response = await request(pageUrl);
+  for (const PAGEURL of list) {
+    logger.info(PAGEURL);
+    const response = await request(PAGEURL);
     const $ = load(response);
-    $('tr').slice(1).each((_i, tr) => {
+    const queries: Array<string> = [];
+    $('tr:has(td)').each((_i, tr) => {
       const td = $(tr).find('td');
-      const product = $(td).eq(0).text().trim();
-      const unit = $(td).eq(1).text().trim();
-      const priceMin = $(td).eq(2).text().replace(',', '.').replace(/[^\d.]/, '').trim();
-      const priceMax = $(td).eq(3).text().replace(',', '.').replace(/[^\d.]/, '').trim();
-      logger.info(`${product}, ${unit}, ${priceMin}, ${priceMax} ${pageUrl}`);
+      const PRODUCT = $(td).eq(0).text().trim();
+      const UNIT = $(td).eq(1).text().trim();
+      const PRICEMIN = Number($(td).eq(2).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
+      const PRICEMAX = Number($(td).eq(3).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
+      const HASH = createHash('md5').update(`${SOURCE}${PRODUCT}${UNIT}${DATE}${PAGEURL}`).digest('hex');
+      const entry = {
+        HASH,
+        DATE,
+        UNIT,
+        PAGEURL,
+        PRICEMAX,
+        PRICEMIN,
+        PRODUCT,
+        SOURCE,
+      };
+      const query = `${insert('PRICES', entry).toString()};`;
+      queries.push(query);
+    });
+
+    await request({
+      url: 'http://localhost:8088/ksql',
+      method: 'POST',
+      headers: { Accept: 'application/vnd.ksql.v1+json' },
+      body: {
+        ksql: queries.join('\n'),
+        streamsProperties: {},
+      },
     });
   }
 }, 30000);
