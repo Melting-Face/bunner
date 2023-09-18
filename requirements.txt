@@ -6,3 +6,5 @@ asgiref
 psycopg2-binary
 snowflake-connector-python
 snowflake-sqlalchemy
+pyspark
+apache-airflow-providers-apache-spark

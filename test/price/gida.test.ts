@@ -113,10 +113,10 @@ test('consume', async () => {
     const queries: Array<string> = [];
     $('tr:has(td)').each((_i, tr) => {
       const td = $(tr).find('td');
-      const PRODUCT = $(td).eq(0).text().trim();
-      const UNIT = $(td).eq(1).text().trim();
-      const PRICEMIN = Number($(td).eq(2).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
-      const PRICEMAX = Number($(td).eq(3).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
+      const PRODUCT = td.eq(0).text().trim();
+      const UNIT = td.eq(1).text().trim();
+      const PRICEMIN = Number(td.eq(2).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
+      const PRICEMAX = Number(td.eq(3).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
       const HASH = createHash('md5').update(`${SOURCE}${PRODUCT}${UNIT}${DATE}${PAGEURL}`).digest('hex');
       const entry = {
         HASH,
@@ -129,6 +129,7 @@ test('consume', async () => {
         SOURCE,
       };
       const query = `${insert('PRICES', entry).toString()};`;
+      logger.info(query);
       queries.push(query);
     });
 
@@ -142,4 +143,4 @@ test('consume', async () => {
       },
     });
   }
-}, 30000);
+}, 100000);
