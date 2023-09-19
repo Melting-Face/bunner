@@ -1,4 +1,4 @@
 [tool.sqlfluff.core]
-dialect = "sparksql"
+dialect = "snowflake"
 exclude_rules = "RF04"
 warnings = "PRS"
