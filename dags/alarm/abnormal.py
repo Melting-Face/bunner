@@ -79,7 +79,7 @@ def calculate():
         df: pd.DataFrame = df.merge(
             imputed_df,
             left_on=['date_category'],
-            rignt_on=['date_category'],
+            right_on=['date_category'],
             how='left',
         )
         df = df.drop('date_category', axis=1)
