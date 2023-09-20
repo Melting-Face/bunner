@@ -35,9 +35,17 @@
 
 # DEV COMMAND
 
-## KSQLDB
+## conda
 
-### CLI
+### create virtual env
+```shell
+conda create -n airflow python=3.11 pyspark
+```
+
+
+## ksqldb
+
+### cli
 ```shell
 docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
 ```
