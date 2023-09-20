@@ -83,8 +83,8 @@ def calculate():
             how='left',
         )
         df = df.drop('date_category', axis=1)
-        print("""
-f{tabulate(df, headers="keys")}
+        print(f"""
+{tabulate(df, headers="keys")}
         """)
         return df
 
