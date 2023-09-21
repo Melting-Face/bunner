@@ -1,5 +1,6 @@
 from datetime import date, datetime, timedelta
 
+import numpy as np
 import pandas as pd
 from airflow.decorators import dag, task
 from airflow.providers.postgres.hooks.postgres import PostgresHook
@@ -10,8 +11,64 @@ from pyspark.sql import types as T
 from sklearn.impute import KNNImputer
 from tabulate import tabulate
 
-PRICE_ABNORMAL_ALARM_WINDOW_SIZE = 21
-ABNORMAL_WEEK_SPAN = 52
+WINDOW_SIZE = 21
+WEEK_SPAN = 52
+
+def get_price_min_max_scale(series: pd.Series) -> pd.Series:
+    _max = series.max()
+    _min = series.min()
+    scaled_series = (series - _min) / (_max - _min)
+    return scaled_series
+
+def get_price_min_max_adjusted_scale(series: pd.Series) -> pd.Series:
+    _max = series.max() * 0.9
+    _min = series.min() * 1.1
+    scaled_series = (series - _min) / (_max - _min)
+    return scaled_series
+
+def calculate_band(series: pd.Series, sigma: float = 3.5):
+    i, start, window_size = 0, 0, WINDOW_SIZE
+
+    one_month = np.timedelta64(1, 'm')
+    upper_band = []
+    lower_band = []
+
+    print(series)
+
+    while i < len(series) - window_size + 1:
+        if (series.index[i + window_size - 1] - series.index[start]) / one_month > 3:
+            start += 1
+        window = series[start : i + window_size]
+        upper = sigma * window.std() + window.mean()
+        lower = -sigma * window.std() + window.mean()
+
+        upper_band.append(upper)
+        lower_band.append(lower)
+        i += 1
+
+    upper_band = pd.Series(upper_band, index=series.index[window_size - 1 :])
+    lower_band = pd.Series(lower_band, index=series.index[window_size - 1 :])
+    if len(series) < window_size:
+        empty_series = pd.Series([np.nan] * len(series), index=series.index)
+    else:
+        empty_series = pd.Series(
+            [np.nan] * (window_size - 1), index=series.index[: window_size - 1]
+        )
+
+    upper_band = pd.concat([empty_series, upper_band])
+    lower_band = pd.concat([empty_series, lower_band])
+    return upper_band, lower_band
+
+def calculate_nelson(data, sigma):
+    mu = data["price_avg_imputed_scaled"].mean()
+    std = data["price_avg_imputed_scaled"].std()
+
+    nelson_upper_band = mu + sigma * std
+    nelson_lower_band = mu - sigma * std
+
+    data['nelson_upper_band'] = nelson_upper_band
+    data['nelson_lower_band'] = nelson_lower_band
+    return data
 
 @dag(start_date=datetime(2023, 9, 19), schedule=None)
 def calculate():
@@ -31,10 +88,8 @@ def calculate():
     def get_abnormal_entries():
         spark: SparkSession = SparkSession.builder.getOrCreate()
         df: DataFrame = spark.read.csv(header=True, path="./alarms/*.csv")
-        df = df.withColumn("is_abnormal", F.col("is_abnormal").cast(T.IntegerType()))
         df = df.withColumn("entry_id", F.col("entry_id").cast(T.IntegerType()))
-        df = df.where(F.col("is_abnormal") == 1)
-        df = df.select("entry_id")
+        df = df.select("entry_id").distinct()
         df.show()
         entries = df.rdd.map(lambda x: x["entry_id"]).collect()
         spark.stop()
@@ -44,7 +99,7 @@ def calculate():
     def make_query(entries):
         price = Table("price_price")
         date_to = date.today()
-        date_from = date_to - timedelta(weeks=ABNORMAL_WEEK_SPAN)
+        date_from = date_to - timedelta(weeks=WEEK_SPAN)
         query = Query.from_(price).select(*columns).where(
             price.entry_id.isin([entries[0]])
             & price.date[date_from:date_to]
@@ -65,7 +120,9 @@ def calculate():
         daily_df: pd.DataFrame = pd.DataFrame(daily)
         df = daily_df.merge(df, left_on=['date'], right_on=['date'], how='left')
 
-        print(tabulate(df, headers="keys"))
+        print(f"""
+{tabulate(df, headers="keys")}
+        """)
         return df
 
     @task
@@ -88,11 +145,62 @@ def calculate():
         """)
         return df
 
+    @task
+    def scale_price(df: pd.DataFrame):
+        df['price_avg'] = df['price_avg'].astype(float)
+        df['price_avg_imputed'] = df['price_avg_imputed'].astype(float)
 
+        df['price_avg_scaled'] = get_price_min_max_scale(df['price_avg'])
+        df['price_avg_imputed_scaled'] = get_price_min_max_scale(df['price_avg_imputed']) # noqa
+
+        df['price_avg_adjusted_scaled'] = get_price_min_max_adjusted_scale(df['price_avg']) # noqa
+        df['price_avg_imputed_adjusted_scaled'] = get_price_min_max_adjusted_scale(df['price_avg_imputed']) # noqa
+
+        print(f"""
+{tabulate(df, headers="keys")}
+        """)
+
+        return df
+
+    @task
+    def get_band(df: pd.DataFrame):
+        df = df.set_index('date')
+        df['upper_band'], df['lower_band'] = calculate_band(df['price_avg_imputed_adjusted_scaled']) # noqa
+        print(f"""
+{tabulate(df, headers="keys")}
+        """)
+        return df
+
+    @task
+    def save_csv(df: pd.DataFrame):
+        df.to_csv("test.csv")
+
+    @task
+    def save_parquet(df: pd.DataFrame):
+        df.to_parquet("price.parquet")
+
+    @task
+    def make_query2(entries):
+        price = Table("price_price")
+        date_to = date.today()
+        date_from = date_to - timedelta(weeks=WEEK_SPAN)
+        query = Query.from_(price).select(*columns).where(
+            price.entry_id.isin(entries[:20])
+            & price.date[date_from:date_to]
+            & price.period == 'd'
+        )
+        print(query)
+        return f"{query};"
 
     entries = get_abnormal_entries()
     sql = make_query(entries)
+    sql2 = make_query2(entries)
     df = get_df(sql)
+    df2 = get_df(sql2)
+    save_parquet(df2)
     df = impute_price(df)
+    df = scale_price(df)
+    df = get_band(df)
+    save_csv(df)
 
 calculate()

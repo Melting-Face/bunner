@@ -4,6 +4,7 @@ asgiref
 psycopg2-binary
 snowflake-connector-python
 snowflake-sqlalchemy
+numpy
 pandas
 pyspark
 pypika
