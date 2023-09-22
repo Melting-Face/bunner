@@ -6,7 +6,8 @@ from sklearn.impute import KNNImputer
 WINDOW_SIZE = 21
 WEEK_SPAN = 52
 
-def write_text():
+@st.cache_data
+def create_df(entry_id):
     def impute_price(df):
         df['date_category'] = df['date'].astype('category').cat.codes
         imputer = KNNImputer(n_neighbors=2)
@@ -83,18 +84,17 @@ def write_text():
         df['upper_band'], df['lower_band'] = calculate_band(df['price_avg_imputed_adjusted_scaled']) # noqa
         return df
 
-    entry_id = st.session_state['entry_id']
     df = pd.read_parquet(f"whitelist_price/{entry_id}.parquet")
     df = impute_price(df)
     df = scale_price(df)
     df = get_band(df)
     df = df.reset_index()
     df["date"] = df["date"].dt.strftime("%Y-%m-%d")
-    st.line_chart(
-        df,
-        x = "date",
-        y = ["lower_band", "price_avg_imputed_scaled", "upper_band"],
-    )
+    return df
+
+def callback():
+    entry_id = st.session_state['entry_id']
+    df = create_df(entry_id)
 
 option = st.selectbox(
     key='entry_id',
@@ -131,5 +131,5 @@ option = st.selectbox(
         41030389,
         41046892,
     ),
-    on_change=write_text
+    on_change=callback
 )

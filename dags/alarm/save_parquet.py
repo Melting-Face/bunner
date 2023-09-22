@@ -27,22 +27,22 @@ def save():
     @task
     def get_whitelist_entries():
         spark: SparkSession = SparkSession.builder.getOrCreate()
-        df: DataFrame = spark.read.csv(header=True, path="./whitelist.csv")
+        df: DataFrame = spark.read.csv(header=True, path="./alarms/*.csv")
         df = df.withColumn("entry_id", F.col("entry_id").cast(T.IntegerType()))
         df = df.select("entry_id").distinct()
         df.show()
-        entries = df.rdd.repartition(1000).map(lambda x: x["entry_id"]).glom().collect()
+        entries = df.rdd.map(lambda x: x["entry_id"]).collect()
         print(entries)
         spark.stop()
         return entries
 
     @task
-    def save_parquet(entries):
+    def save_parquet(entry):
         price = Table("price_price")
         date_to = date.today()
         date_from = date_to - timedelta(weeks=WEEK_SPAN)
         query = Query.from_(price).select(*COLUMNS).where(
-            price.entry_id.isin(entries)
+            price.entry_id.isin([entry])
             & price.date[date_from:date_to]
             & price.period == 'd'
         )
@@ -52,28 +52,26 @@ def save():
         hook = PostgresHook(postgres_conn_id="postgres_conn")
         records = hook.get_records(f"{query};")
         df = pd.DataFrame(columns=COLUMNS, data=records)
-        groups = df.groupby("entry_id")
-        for group_name, group_df in groups:
-            group_df['date'] = pd.to_datetime(group_df['date'])
-            daily = {'date': pd.date_range(min(group_df['date']), date_to, freq='D')}
-            daily_df: pd.DataFrame = pd.DataFrame(daily)
-            group_df = daily_df.merge(
-                group_df,
-                left_on=['date'],
-                right_on=['date'],
-                how='left',
-            )
+        df['date'] = pd.to_datetime(df['date'])
+        daily = {'date': pd.date_range(min(df['date']), date_to, freq='D')}
+        daily_df: pd.DataFrame = pd.DataFrame(daily)
+        df = daily_df.merge(
+            df,
+            left_on=['date'],
+            right_on=['date'],
+            how='left',
+        )
 
-            print(f"""
-    {tabulate(group_df, headers="keys")}
-            """)
+        print(f"""
+{tabulate(df, headers="keys")}
+        """)
 
-            group_df.to_parquet(
-                f"whitelist_price/{group_name}.parquet",
-                compression=None
-            )
+        df.to_parquet(
+            f"whitelist_price/{entry}.parquet",
+            compression=None
+        )
 
-    entries_list = get_whitelist_entries()
-    save_parquet.expand(entries=entries_list)
+    entries = get_whitelist_entries()
+    save_parquet.expand(entry=entries)
 
 save()
