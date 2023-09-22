@@ -59,17 +59,6 @@ def calculate_band(series: pd.Series, sigma: float = 3.5):
     lower_band = pd.concat([empty_series, lower_band])
     return upper_band, lower_band
 
-def calculate_nelson(data, sigma):
-    mu = data["price_avg_imputed_scaled"].mean()
-    std = data["price_avg_imputed_scaled"].std()
-
-    nelson_upper_band = mu + sigma * std
-    nelson_lower_band = mu - sigma * std
-
-    data['nelson_upper_band'] = nelson_upper_band
-    data['nelson_lower_band'] = nelson_lower_band
-    return data
-
 @dag(start_date=datetime(2023, 9, 19), schedule=None)
 def calculate():
     columns=[
@@ -173,31 +162,11 @@ def calculate():
 
     @task
     def save_csv(df: pd.DataFrame):
-        df.to_csv("test.csv")
-
-    @task
-    def save_parquet(df: pd.DataFrame):
-        df.to_parquet("price.parquet")
-
-    @task
-    def make_query2(entries):
-        price = Table("price_price")
-        date_to = date.today()
-        date_from = date_to - timedelta(weeks=WEEK_SPAN)
-        query = Query.from_(price).select(*columns).where(
-            price.entry_id.isin(entries[:20])
-            & price.date[date_from:date_to]
-            & price.period == 'd'
-        )
-        print(query)
-        return f"{query};"
+        df.to_csv("test.csv") 
 
     entries = get_abnormal_entries()
     sql = make_query(entries)
-    sql2 = make_query2(entries)
     df = get_df(sql)
-    df2 = get_df(sql2)
-    save_parquet(df2)
     df = impute_price(df)
     df = scale_price(df)
     df = get_band(df)

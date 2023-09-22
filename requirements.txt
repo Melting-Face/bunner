@@ -5,6 +5,7 @@ psycopg2-binary
 snowflake-connector-python
 snowflake-sqlalchemy
 numpy
+pyarrow
 pandas
 pyspark
 pypika
