@@ -135,6 +135,17 @@ def fao_process():
             print(f"total count: {df.count()}")
             return df
 
+        def generate_world(data_df: DataFrame) -> DataFrame:
+            wl_data_df: DataFrame = data_df.groupBy("period", "code").agg(F.sum("weight").alias("weight"))
+
+            # result
+            wl_data_df.show()
+            wl_data_df.printSchema()
+            print(f"total count: {wl_data_df.count()}")
+            # wl_data_df.withColumns({
+            #     "producer": F.lit("WL"),
+            #     "price": F.lit(None),
+            # })
 
         price_df = fao_price()
         data_df = fao_data()

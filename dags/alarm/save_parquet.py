@@ -44,7 +44,9 @@ def save():
         query = Query.from_(price).select(*COLUMNS).where(
             price.entry_id.isin([entry])
             & price.date[date_from:date_to]
-            & price.period == 'd'
+            & (price.period == 'd')
+            & (price.is_forecasted == 'f')
+            & (price.is_estimated == 'f')
         )
         print(query)
 
@@ -61,6 +63,8 @@ def save():
             right_on=['date'],
             how='left',
         )
+        df[['entry_id', 'id', 'currency', 'period']] = df[['entry_id', 'id', 'currency', 'period']].ffill() # noqa
+        df["date"] = df["date"].dt.strftime("%Y-%m-%d")
 
         print(f"""
 {tabulate(df, headers="keys")}

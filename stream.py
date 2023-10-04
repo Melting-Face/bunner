@@ -1,10 +1,19 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
+from pyspark.sql import DataFrame, SparkSession
 from sklearn.impute import KNNImputer
 
 WINDOW_SIZE = 21
 WEEK_SPAN = 52
+
+@st.cache_data
+def get_df():
+    spark = SparkSession.builder.getOrCreate()
+    df: DataFrame = spark.read.parquet("whitelist_price/*.parquet")
+    df = df.toPandas()
+    spark.stop()
+    return df
 
 @st.cache_data
 def create_df(entry_id):
@@ -80,6 +89,7 @@ def create_df(entry_id):
         return df
 
     def get_band(df: pd.DataFrame):
+        df['date'] = pd.to_datetime(df['date'])
         df = df.set_index('date')
         df['upper_band'], df['lower_band'] = calculate_band(df['price_avg_imputed_adjusted_scaled']) # noqa
         return df
@@ -94,42 +104,14 @@ def create_df(entry_id):
 
 def callback():
     entry_id = st.session_state['entry_id']
-    df = create_df(entry_id)
+    create_df(entry_id)
+
+df = get_df()
+options = set(df['entry_id'].unique())
 
 option = st.selectbox(
     key='entry_id',
     label="Select entry_id?",
-    options=(
-        50898759,
-        51053464,
-        57082875,
-        103642448,
-        105365174,
-        106929750,
-        109993961,
-        109995061,
-        109995120,
-        111561504,
-        81039347,
-        85667518,
-        100118571,
-        100164545,
-        103386814,
-        104032939,
-        109994849,
-        110122911,
-        110123188,
-        133133919,
-        40933750,
-        40936259,
-        40936745,
-        40937436,
-        40939113,
-        40940366,
-        40940748,
-        40945912,
-        41030389,
-        41046892,
-    ),
+    options=options,
     on_change=callback
 )
