@@ -136,21 +136,61 @@ def fao_process():
             return df
 
         def generate_world(data_df: DataFrame) -> DataFrame:
-            wl_data_df: DataFrame = data_df.groupBy("period", "code").agg(F.sum("weight").alias("weight"))
+            print("generate_world")
+            wl_data_df: DataFrame = data_df.groupBy("period", "code")
+            wl_data_df = wl_data_df.agg(F.sum("weight").alias("weight"))
+
+            wl_data_df = wl_data_df.withColumns({
+                "producer": F.lit("WL"),
+                "price": F.lit(None),
+            })
+
+            wl_data_df = wl_data_df.where(F.col("weight").isNotNull())
+
+            fields = ["period", "producer", "code", "weight", "price"]
+            data_df = data_df.select(fields)
+            wl_data_df = wl_data_df.select(fields)
+            data_df = data_df.union(wl_data_df)
 
             # result
-            wl_data_df.show()
-            wl_data_df.printSchema()
-            print(f"total count: {wl_data_df.count()}")
-            # wl_data_df.withColumns({
-            #     "producer": F.lit("WL"),
-            #     "price": F.lit(None),
-            # })
+            data_df.show()
+            data_df.printSchema()
+            print(f"total count: {data_df.count()}")
+            return data_df
+
+        def count_conditionally(condition):
+            return F.count(F.when(condition, True))
+
+        def sum_or_null(column):
+            return F.when(count_conditionally(F.col(column).isNull()) > 0, None).otherwise(
+                F.sum(column)
+            )
+
+        def generate_total(data_df: DataFrame) -> DataFrame:
+            print("generate_total")
+            total_df = data_df.groupBy("period", "producer").agg(
+                F.sum("weight").alias("weight"),
+                sum_or_null("price").alias("price"),
+                F.sum("price").alias("price2"),
+                F.lit("TOTAL").alias("code"),
+            )
+            # fields = ["period", "producer", "code", "weight", "price"]
+            # data_df = data_df.select(fields)
+            # total_df = total_df.select(fields)
+            # data_df = data_df.union(total_df)
+            #
+            total_df.show()
+            total_df.printSchema()
+            print(f"total count: {total_df.count()}")
+            return data_df
+
 
         price_df = fao_price()
         data_df = fao_data()
         code_df = aggregate_production_code(data_df)
         data_df = aggregate_production_data(data_df, price_df)
+        data_df = generate_world(data_df)
+        generate_total(data_df)
 
         spark.stop()
 
