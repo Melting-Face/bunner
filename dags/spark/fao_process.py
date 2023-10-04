@@ -158,30 +158,21 @@ def fao_process():
             print(f"total count: {data_df.count()}")
             return data_df
 
-        def count_conditionally(condition):
-            return F.count(F.when(condition, True))
-
-        def sum_or_null(column):
-            return F.when(count_conditionally(F.col(column).isNull()) > 0, None).otherwise(
-                F.sum(column)
-            )
-
         def generate_total(data_df: DataFrame) -> DataFrame:
             print("generate_total")
             total_df = data_df.groupBy("period", "producer").agg(
                 F.sum("weight").alias("weight"),
-                sum_or_null("price").alias("price"),
-                F.sum("price").alias("price2"),
+                F.sum("price").alias("price"),
                 F.lit("TOTAL").alias("code"),
             )
-            # fields = ["period", "producer", "code", "weight", "price"]
-            # data_df = data_df.select(fields)
-            # total_df = total_df.select(fields)
-            # data_df = data_df.union(total_df)
-            #
-            total_df.show()
-            total_df.printSchema()
-            print(f"total count: {total_df.count()}")
+            fields = ["period", "producer", "code", "weight", "price"]
+            data_df = data_df.select(fields)
+            total_df = total_df.select(fields)
+            data_df = data_df.union(total_df)
+
+            data_df.show()
+            data_df.printSchema()
+            print(f"total count: {data_df.count()}")
             return data_df
 
 
@@ -190,7 +181,7 @@ def fao_process():
         code_df = aggregate_production_code(data_df)
         data_df = aggregate_production_data(data_df, price_df)
         data_df = generate_world(data_df)
-        generate_total(data_df)
+        data_df = generate_total(data_df)
 
         spark.stop()
 
