@@ -1,7 +1,12 @@
 from datetime import datetime
 
+import pandas as pd
 from airflow.decorators import dag, task
+from airflow.providers.postgres.hooks.postgres import PostgresHook
 from constants import VERBOSE_COUNTRY_MAP
+from pypika import Query, Table
+
+# from pypika.dialects import SnowflakeQuery as Query
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql import types as T
@@ -9,6 +14,25 @@ from pyspark.sql import types as T
 
 @dag(start_date=datetime(2023, 9, 18), schedule=None)
 def fao_process():
+    @task
+    def table_to_csv(table_name):
+        hook = PostgresHook(postgres_conn_id="postgres_conn")
+        information = Table("information_schema.columns")
+        table = Table(table_name)
+        query = Query.from_(information).select("column_name").where(
+            information.table_name == table_name
+        ).get_sql(quote_char=None)
+        print(f"query: {query}")
+
+        records = hook.get_records(f"{query};")
+        columns = [record[0] for record in records]
+
+        query = Query.from_(table).select('*').get_sql(quote_char=None)
+        records = hook.get_records(f"{query};")
+
+        df = pd.DataFrame(columns=columns, data=records)
+        df.to_csv(f"{table_name}.csv")
+
     @task
     def fao_aggregate():
         spark: SparkSession = SparkSession.builder.getOrCreate()
@@ -162,7 +186,12 @@ def fao_process():
             print("generate_total")
             total_df = data_df.groupBy("period", "producer").agg(
                 F.sum("weight").alias("weight"),
-                F.sum("price").alias("price"),
+                F.when(
+                    F.count(F.when(F.col("price").isNull(), True)) > 0,
+                    None,
+                ).otherwise(
+                    F.sum("price")
+                ).alias("price"),
                 F.lit("TOTAL").alias("code"),
             )
             fields = ["period", "producer", "code", "weight", "price"]
@@ -175,10 +204,9 @@ def fao_process():
             print(f"total count: {data_df.count()}")
             return data_df
 
-
         price_df = fao_price()
         data_df = fao_data()
-        code_df = aggregate_production_code(data_df)
+        aggregate_production_code(data_df)
         data_df = aggregate_production_data(data_df, price_df)
         data_df = generate_world(data_df)
         data_df = generate_total(data_df)
@@ -186,5 +214,6 @@ def fao_process():
         spark.stop()
 
     fao_aggregate()
+    table_to_csv.expand(table_name=['insight_producecode', 'fao_produce'])
 
 fao_process()
