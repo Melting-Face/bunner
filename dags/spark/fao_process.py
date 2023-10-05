@@ -204,16 +204,27 @@ def fao_process():
             print(f"total count: {data_df.count()}")
             return data_df
 
+        def generate_trend(data_df: DataFrame) -> DataFrame:
+            print("generate_trend")
+            trend_df = data_df.groupBy("producer", "code").agg(
+                F.collect_list(F.struct(["period", "weight", "price"]))
+            )
+
+            trend_df.show()
+            trend_df.printSchema()
+            print(f"total count: {trend_df.count()}")
+
         price_df = fao_price()
         data_df = fao_data()
         aggregate_production_code(data_df)
         data_df = aggregate_production_data(data_df, price_df)
         data_df = generate_world(data_df)
         data_df = generate_total(data_df)
+        generate_trend(data_df)
 
         spark.stop()
 
     fao_aggregate()
-    table_to_csv.expand(table_name=['insight_producecode', 'fao_produce'])
+    # table_to_csv.expand(table_name=['insight_producecode', 'fao_produce'])
 
 fao_process()
