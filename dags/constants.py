@@ -248,3 +248,4 @@ VERBOSE_COUNTRY_MAP = {
     "Zambia": "ZM",
     "Zimbabwe": "ZW",
 }
+YEARLY_DELTA = [1, 3, 5]
