@@ -1,6 +1,4 @@
-import operator
 from datetime import datetime
-from functools import reduce
 
 import pandas as pd
 from airflow.decorators import dag, task
@@ -243,97 +241,6 @@ def fao_process():
             print(f"total count: {trend_df.count()}")
             return trend_df
 
-        # def generate_stats(data_df: DataFrame) -> DataFrame:
-        #     class StatsCalculator:
-        #         @staticmethod
-        #         def calculate_share(
-        #             df, partioning_keys, column, share_column, country_columns
-        #         ) -> DataFrame:
-        #             condition = reduce(
-        #                 operator.or_,
-        #                 (F.col(country_column) == "WL" for country_column in country_columns),
-        #             )
-        #
-        #             window = W.partitionBy(*partioning_keys, F.when(condition, 0).otherwise(1))
-        #
-        #             df = df.withColumn(
-        #                 share_column,
-        #                 F.when(condition, F.lit(None)).otherwise(
-        #                     F.col(column) / F.sum(column).over(window)
-        #                 ),
-        #             )
-        #
-        #             return df
-        #
-        #         @staticmethod
-        #         def calculate_rank(
-        #             df, partitioning_keys, column, rank_column, country_columns
-        #         ) -> DataFrame:
-        #             condition = (
-        #                 reduce(
-        #                     operator.or_,
-        #                     (F.col(country_column) == "WL" for country_column in country_columns),
-        #                 )
-        #                 | F.col(column).isNull()
-        #             )
-        #
-        #             window = W.partitionBy(
-        #                 *partitioning_keys,
-        #                 # to exclude null columns from the rankings
-        #                 F.when(condition, 0).otherwise(1),
-        #             ).orderBy(F.col(column).desc())
-        #
-        #             df = df.withColumn(
-        #                 rank_column, F.when(condition, None).otherwise(F.dense_rank().over(window))
-        #             )
-        #
-        #             return df
-        #
-        #         @staticmethod
-        #         def calculate_hh(df, partitioning_keys, share_column, hh_column) -> DataFrame:
-        #             window = W.partitionBy(*partitioning_keys)
-        #
-        #             df = df.withColumn(
-        #                 hh_column, F.sum(F.pow(F.col(share_column) * 100, 2)).over(window)
-        #             )
-        #
-        #             return df
-        #
-        #         @classmethod
-        #         def calculate(
-        #             cls,
-        #             df,
-        #             partitioning_keys,
-        #             column,
-        #             share_column,
-        #             rank_column,
-        #             hh_column,
-        #             country_columns,
-        #         ) -> DataFrame:
-        #             df = cls.calculate_share(
-        #                 df, partitioning_keys, column, share_column, country_columns
-        #             )
-        #             df = cls.calculate_rank(
-        #                 df, partitioning_keys, share_column, rank_column, country_columns
-        #             )
-        #             df = cls.calculate_hh(df, partitioning_keys, share_column, hh_column)
-        #
-        #             return df
-        #     data_df = StatsCalculator.calculate(
-        #     data_df,
-        #         ["period", "code"],
-        #         "weight",
-        #         "weight_share_for_world",
-        #         "weight_rank_for_world",
-        #         "hh",
-        #         ["producer"],
-        #     )
-        #     data_df.coalesce(1).write.option("header", True).csv("statDF")
-        #     data_df.show()
-        #     data_df.printSchema()
-        #     print(f"total count: {data_df.count()}")
-        #
-        #     return data_df
         def generate_stats(data_df: DataFrame) -> DataFrame:
             weight = F.when(F.col("producer") != "WL", F.col("weight"))
             windowSpec  = W.partitionBy("period", "code")
@@ -342,15 +249,13 @@ def fao_process():
                 "weight_rank_for_world": F.dense_rank().over(windowSpecForRank),
                 "weight_share_for_world": weight / F.sum(weight).over(windowSpec),
             })
-            data_df.withColumn(
-                "weight_rank_for_world",
-                F.when(F.col("producer") != 'WL', F.col("weight_rank_for_world")),
-            )
             data_df = data_df.withColumn(
-                "hh",
-                F.sum(F.pow(F.col("weight_share_for_world") * 100, 2)).over(windowSpec)
+                "weight_rank_for_world",
+                F.when(
+                    F.col("producer") == 'WL', F.lit(None)
+                ).otherwise(F.col("weight_rank_for_world")),
             )
-            data_df.coalesce(1).write.option("header", True).csv("statDF4")
+            data_df.coalesce(1).write.option("header", True).csv("statDF6")
             data_df.show()
             data_df.printSchema()
             print(f"total count: {data_df.count()}")
