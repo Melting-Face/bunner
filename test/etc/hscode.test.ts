@@ -73,7 +73,7 @@ test('hscode-2017', async () => {
   for (const item of items) {
     if (/^[0-4]\d*|TOTAL/.test(item.Between) && item.__EMPTY_2 === '1:1') {
       const entry = {
-        HS2022: item.Between,
+        HS2017: item.Between,
         HS2012: item.__EMPTY_1,
       };
       entries.push(entry);
