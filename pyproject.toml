@@ -2,3 +2,7 @@
 dialect = "snowflake"
 exclude_rules = "RF04"
 warnings = "PRS"
+
+[tool.ruff]
+extend-include = ["I", "C4", "C90", "COM", "SIM", "PD", "Q"]
+extend-ignore = ["PD901"]
