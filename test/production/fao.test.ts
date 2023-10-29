@@ -23,39 +23,6 @@ interface BufferWithName {
 
 const bufferWithName: BufferWithName = {};
 
-async function bulkCsvToJson(
-  data: string | Buffer,
-  columnSeparator = ',',
-  rowSeparator = '\n',
-  headerSeparator = ',',
-  preprocessForRow = ((row: string) => row),
-) {
-  if (!data) {
-    throw new Error('Data is required');
-  }
-
-  if (typeof data !== 'string' && !Buffer.isBuffer(data)) {
-    throw new Error('Type Error: Only Buffer or String is available');
-  }
-
-  const buffer = Buffer.from(data);
-  const duplex = new Duplex({
-    readableObjectMode: true,
-    writableObjectMode: true,
-    read(size) {
-      
-    },
-    write(chunk, encoding, callback) {
-      logger.info(chunk);
-      callback();
-    },
-  });
-  duplex.push(data);
-  duplex.push(null);
-  await pipeline(duplex);
-  return [];
-}
-
 beforeAll(async () => {
   for (const fileName of fileNames) {
     try {
@@ -83,21 +50,3 @@ beforeAll(async () => {
     bufferWithName[fileName] = buffer;
   }
 });
-
-test('csv parsing', async () => {
-  for (const fileName of fileNames) {
-    logger.info(`${fileName}`);
-    logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
-    const buffer = bufferWithName[fileName];
-
-    logger.info('Get Buffer data');
-    logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
-
-    const entries = await bulkCsvToJson(buffer, '","', '\r\n', ',', ((row) => row.replace(/^["]|["]$/g, '')));
-    // expect(entries.length).toBeTruthy();
-    logger.info('Convert csv');
-    logger.info(`Memory: ${process.memoryUsage().heapTotal / 1024 / 1024} MB`);
-
-    logger.info(JSON.stringify(entries.slice(10), null, 2));
-  }
-}, 30000);
