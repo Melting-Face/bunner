@@ -114,10 +114,11 @@ test('consume', async () => {
       const td = $(tr).find('td');
       const PRODUCT = td.eq(0).text().trim();
       const UNIT = td.eq(1).text().trim();
-      const PRICEMIN = Number(td.eq(2).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
-      const PRICEMAX = Number(td.eq(3).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
+      const PRICEMIN = td.eq(2).text();
+      const PRICEMAX = td.eq(3).text();
       const hash = createHash('md5').update(`${SOURCE}${PRODUCT}${UNIT}${DATE}${PAGEURL}`).digest('hex');
       const entry = {
+        hash,
         DATE,
         UNIT,
         PAGEURL,

@@ -139,11 +139,13 @@ class Ksql {
   async #initialize(entry: object) {
     const fields = [];
     for (const key in entry) {
-      fields.push(`${key} VARCHAR`);
+      if (key !== 'hash') {
+        fields.push(`${key} VARCHAR`);
+      }
     }
 
     this.query = `
-    CREATE TABLE IF NOT EXISTS ${this.source} (
+    CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
         hash VARCHAR PRIMARY KEY,
         ${fields.join(',\n')}
     ) WITH (
@@ -158,7 +160,7 @@ class Ksql {
     await this.#initialize(entries[0]);
     const queries = [];
     for (const entry of entries) {
-      const query = `${insert(this.source, entry).toString()};`;
+      const query = `${insert(this.source.toUpperCase(), entry).toString()};`;
       queries.push(query);
     }
 
