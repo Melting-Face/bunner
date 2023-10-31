@@ -2,13 +2,12 @@ import { createHash } from 'crypto';
 
 import { test } from 'bun:test';
 import { load } from 'cheerio';
-import { insert } from 'sql-bricks';
-
-import request from '../lib/request';
 
 import {
+  Ksql,
   delay,
   logger,
+  request,
 } from '../lib/utils';
 
 const SOURCE = 'Gida';
@@ -106,20 +105,19 @@ test('produce', async () => {
 }, 30000);
 
 test('consume', async () => {
+  const entries: Array<object> = [];
   for (const PAGEURL of list) {
     logger.info(PAGEURL);
     const response = await request(PAGEURL);
     const $ = load(response);
-    const queries: Array<string> = [];
     $('tr:has(td)').each((_i, tr) => {
       const td = $(tr).find('td');
       const PRODUCT = td.eq(0).text().trim();
       const UNIT = td.eq(1).text().trim();
       const PRICEMIN = Number(td.eq(2).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
       const PRICEMAX = Number(td.eq(3).text().replaceAll(',', '.').replace(/[^\d.]/g, '').trim());
-      const HASH = createHash('md5').update(`${SOURCE}${PRODUCT}${UNIT}${DATE}${PAGEURL}`).digest('hex');
+      const hash = createHash('md5').update(`${SOURCE}${PRODUCT}${UNIT}${DATE}${PAGEURL}`).digest('hex');
       const entry = {
-        HASH,
         DATE,
         UNIT,
         PAGEURL,
@@ -128,19 +126,9 @@ test('consume', async () => {
         PRODUCT,
         SOURCE,
       };
-      const query = `${insert('PRICES', entry).toString()};`;
-      logger.info(query);
-      queries.push(query);
-    });
-
-    await request({
-      url: 'http://localhost:8088/ksql',
-      method: 'POST',
-      headers: { Accept: 'application/vnd.ksql.v1+json' },
-      body: {
-        ksql: queries.join('\n'),
-        streamsProperties: {},
-      },
+      entries.push(entry);
     });
   }
+  const ksql = new Ksql(SOURCE);
+  await ksql.insertMany(entries);
 }, 100000);
