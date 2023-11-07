@@ -7,6 +7,7 @@ import { load } from 'cheerio';
 import { range } from 'lodash';
 
 import {
+  Ksql,
   logger,
   request,
 } from '../lib/utils';
@@ -16,37 +17,44 @@ test('consume', async () => {
   expect(response).toBeTruthy();
   const $ = load(response);
   const trs = $('table tr');
-  const titles: Array<string> = [];
-  const subTitles: Array<string> = [];
+  const categories: Array<string> = [];
+  const products: Array<string> = [];
   trs.eq(0).find('td').each((_i, td) => {
     const colSpan = $(td).attr('colspan');
     logger.info(`colSpan: ${typeof colSpan}`);
     if (colSpan) {
-      const title = $(td).text().trim();
+      const category = $(td).text().trim();
       for (const _ of range(colSpan)) {
-        titles.push(title);
+        categories.push(category);
       }
     }
   });
 
   trs.eq(1).find('td').each((_i, td) => {
-    const subTitle = $(td).text().trim();
-    subTitles.push(subTitle);
+    const product = $(td).text().trim();
+    products.push(product);
   });
+
+  const entries: Array<object> = [];
 
   trs.slice(2).each((_i, tr) => {
     const tds = $(tr).find('td');
     const date = tds.eq(0).text().trim();
-    tds.each((_j, td) => {
+    tds.slice(1).each((j, td) => {
       const value = $(td).text().trim();
       const entry = {
         date,
         value,
-        title: titles[j],
-        subTitle: subTitles[j],
+        category: categories[j],
+        product: products[j],
+        uuid: crypto.randomUUID(),
       };
+      entries.push(entry);
+      logger.info(JSON.stringify(entry, null, 2));
     });
   });
 
-  logger.info(subTitles);
-}, 10000);
+  const ksql = new Ksql('ttta');
+  await ksql.insertMany(entries);
+  logger.info(trs.eq(1).find('strong').text().trim());
+}, 60000);
