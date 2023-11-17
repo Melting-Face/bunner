@@ -139,14 +139,14 @@ class Ksql {
   async #initialize(entry: object) {
     const fields = [];
     for (const key in entry) {
-      if (key !== 'hash') {
+      if (key !== 'uuid') {
         fields.push(`${key} VARCHAR`);
       }
     }
 
     this.query = `
     CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
-        hash VARCHAR PRIMARY KEY,
+        uuid VARCHAR PRIMARY KEY,
         ${fields.join(',\n')}
     ) WITH (
         kafka_topic='${this.source}',

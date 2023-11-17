@@ -8,19 +8,31 @@ import { range } from 'lodash';
 
 import {
   Ksql,
+  delay,
   logger,
   request,
 } from '../lib/utils';
 
 test('consume', async () => {
-  const response = await request('https://ttta-tapioca.org/%e0%b8%a3%e0%b8%b2%e0%b8%84%e0%b8%b2/?lang=en');
+  let response;
+  let tryCount = 3;
+  while (tryCount > 0) {
+    try {
+      response = await request('https://ttta-tapioca.org/%e0%b8%a3%e0%b8%b2%e0%b8%84%e0%b8%b2/?lang=en');
+      break;
+    } catch (e) {
+      logger.warn(e);
+      tryCount -= 1;
+      await delay(10000);
+    }
+  }
   expect(response).toBeTruthy();
   const $ = load(response);
   const trs = $('table tr');
   const categories: Array<string> = [];
   const products: Array<string> = [];
   trs.eq(0).find('td').each((_i, td) => {
-    const colSpan = $(td).attr('colspan');
+    const colSpan = Number($(td).attr('colspan'));
     logger.info(`colSpan: ${typeof colSpan}`);
     if (colSpan) {
       const category = $(td).text().trim();
