@@ -170,7 +170,7 @@ CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
       return obj;
     });
     await this.#initialize(objs[0]);
-    this.query = insertInto(this.source.toUpperCase()).values(objs).toString();
+    this.query = `${insertInto(this.source.toUpperCase()).values(objs).toString()};`;
     await this.#push();
   }
 
