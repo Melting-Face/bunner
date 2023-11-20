@@ -1,4 +1,4 @@
-import { insert } from 'sql-bricks';
+import { insert, insertInto } from 'sql-bricks';
 import {
   createLogger,
   format,
@@ -57,10 +57,7 @@ export default async function request(args: string | Args): Promise<any> {
         body: bodyOptions,
         form: formOptions,
       } = args);
-      const requestObject: any = {
-        method,
-        verbose: true,
-      };
+      const requestObject: any = { method };
 
       if (bodyOptions) {
         switch (typeof bodyOptions) {
@@ -145,26 +142,26 @@ class Ksql {
     }
 
     this.query = `
-    CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
-        uuid VARCHAR PRIMARY KEY,
-        ${fields.join(',\n')}
-    ) WITH (
-        kafka_topic='${this.source}',
-        value_format='json',
-        partitions=1
-    );`;
+CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
+    uuid VARCHAR PRIMARY KEY,
+    ${fields.join(',\n')}
+) WITH (
+    kafka_topic='${this.source}',
+    value_format='json',
+    partitions=1
+);`;
     await this.#push();
   }
 
   async insertMany(entries: Array<object>) {
     await this.#initialize(entries[0]);
-    const queries = [];
-    for (const entry of entries) {
-      const query = `${insert(this.source.toUpperCase(), entry).toString()};`;
-      queries.push(query);
-    }
+    this.query = insertInto(this.source.toUpperCase()).values(entries).toString();
+    await this.#push();
+  }
 
-    this.query = queries.join('\n');
+  async insertOne(entry: object) {
+    await this.#initialize(entry);
+    this.query = `${insert(this.source.toUpperCase(), entry).toString()};`;
     await this.#push();
   }
 

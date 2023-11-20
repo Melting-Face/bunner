@@ -1,9 +1,8 @@
 data/
 logs/
 node_modules/
-standalone_admin_password.txt
-airflow-webserver.pid
-airflow.db
 **/__pycache__/**
 **/*.log
 **/.DS_Store
+.trunk/
+.vscode/
