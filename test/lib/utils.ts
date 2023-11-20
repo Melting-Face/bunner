@@ -1,4 +1,12 @@
-import { insert, insertInto } from 'sql-bricks';
+import {
+  mapKeys,
+  mapValues,
+  snakeCase,
+} from 'lodash';
+import {
+  insert,
+  insertInto,
+} from 'sql-bricks';
 import {
   createLogger,
   format,
@@ -154,14 +162,25 @@ CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
   }
 
   async insertMany(entries: Array<object>) {
-    await this.#initialize(entries[0]);
-    this.query = insertInto(this.source.toUpperCase()).values(entries).toString();
+    const objs = entries.map((entry: any) => {
+      let obj = entry;
+      obj.uuid = crypto.randomUUID();
+      obj = mapKeys(obj, (_v, k) => snakeCase(k));
+      obj = mapValues(obj, (o: any) => String(o));
+      return obj;
+    });
+    await this.#initialize(objs[0]);
+    this.query = insertInto(this.source.toUpperCase()).values(objs).toString();
     await this.#push();
   }
 
-  async insertOne(entry: object) {
-    await this.#initialize(entry);
-    this.query = `${insert(this.source.toUpperCase(), entry).toString()};`;
+  async insertOne(entry: any) {
+    let obj = entry;
+    obj.uuid = crypto.randomUUID();
+    obj = mapKeys(obj, (_v, k) => snakeCase(k));
+    obj = mapValues(obj, (o: any) => String(o));
+    await this.#initialize(obj);
+    this.query = `${insert(this.source.toUpperCase(), obj).toString()};`;
     await this.#push();
   }
 

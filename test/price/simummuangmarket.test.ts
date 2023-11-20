@@ -3,9 +3,6 @@ import {
   test,
 } from 'bun:test';
 
-import { load } from 'cheerio';
-import { range } from 'lodash';
-
 import {
   Ksql,
   delay,
@@ -13,11 +10,29 @@ import {
   request,
 } from '../lib/utils';
 
+const queue: Array<number> = [];
+
+test('produce', async () => {
+  const response = await request({
+    url: 'https://www.simummuangmarket.com/api/product-group/frontend/list',
+    method: 'POST',
+    type: 'json',
+  });
+  expect(response).toBeTruthy();
+  const productGroups = ['ผัก', 'ผลไม้', 'พืชไร่', 'ของแห้งของดอง', 'ของสดของชำ'];
+  for (const { GroupNameEN, Id } of response) {
+    if (productGroups.includes(GroupNameEN)) {
+      queue.push(Id);
+    }
+  }
+});
+
 test('consume', async () => {
-  for (const index of range(1, 2)) {
+  for (const productGroup of queue) {
+    console.info(productGroup);
     const body = {
       selectedMarket: [],
-      selectedProductGroup: [index],
+      selectedProductGroup: [productGroup],
       sortOrder: 'PriceL desc',
       fromRow: 1,
       toRow: 24,
@@ -41,12 +56,8 @@ test('consume', async () => {
     expect(response).toBeTruthy();
     await delay(1000);
     const { data } = response;
-    const entries = data.map((el: any) => {
-      el.uuid = crypto.randomUUID();
-      return el;
-    });
-    console.info(entries[0]);
+    console.info(data[0]);
     const ksql = new Ksql('simummuangmarket');
-    await ksql.insertMany(entries);
+    await ksql.insertMany(data);
   }
 }, 120000);
