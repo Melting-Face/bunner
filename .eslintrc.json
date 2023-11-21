@@ -37,6 +37,7 @@
     "no-extend-native": 0,
     "import/no-import-module-exports": 0,
     "no-underscore-dangle": 0,
+    "arrow-body-style": 0,
     "semi": [
       "error",
       "always"

@@ -1,7 +1,9 @@
 import {
+  chunk,
   mapKeys,
   mapValues,
   snakeCase,
+  uniq,
 } from 'lodash';
 import {
   insert,
@@ -141,9 +143,9 @@ class Ksql {
     this.source = source;
   }
 
-  async #initialize(entry: object) {
+  async #initialize(keys: Array<string>) {
     const fields = [];
-    for (const key in entry) {
+    for (const key of keys) {
       if (key !== 'uuid') {
         fields.push(`${key} VARCHAR`);
       }
@@ -161,25 +163,33 @@ CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
     await this.#push();
   }
 
-  async insertMany(entries: Array<object>) {
+  async insertMany(entries: Array<object>, pageSize: number = 50) {
+    let keys: Array<string> = [];
     const objs = entries.map((entry: any) => {
       let obj = entry;
       obj.uuid = crypto.randomUUID();
       obj = mapKeys(obj, (_v, k) => snakeCase(k));
-      obj = mapValues(obj, (o: any) => String(o));
+      obj = mapValues(obj, (o: any) => (o ? String(o) : ''));
+      keys = uniq([...keys, ...Object.keys(obj)]);
       return obj;
     });
-    await this.#initialize(objs[0]);
-    this.query = `${insertInto(this.source.toUpperCase()).values(objs).toString()};`;
-    await this.#push();
+    await this.#initialize(keys);
+    for (const values of chunk(objs, pageSize)) {
+      const quries = values.map((value) => {
+        return `${insertInto(this.source.toUpperCase()).values(value).toString()};`;
+      });
+      this.query = quries.join('\n');
+      await this.#push();
+    }
   }
 
   async insertOne(entry: any) {
     let obj = entry;
     obj.uuid = crypto.randomUUID();
     obj = mapKeys(obj, (_v, k) => snakeCase(k));
-    obj = mapValues(obj, (o: any) => String(o));
-    await this.#initialize(obj);
+    obj = mapValues(obj, (o: any) => (o ? String(o) : ''));
+    const keys = uniq(Object.keys(obj));
+    await this.#initialize(keys);
     this.query = `${insert(this.source.toUpperCase(), obj).toString()};`;
     await this.#push();
   }
