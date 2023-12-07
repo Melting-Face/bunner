@@ -4,7 +4,6 @@ import {
 } from 'bun:test';
 
 import {
-  Ksql,
   delay,
   logger,
   request,
@@ -29,7 +28,7 @@ test('produce', async () => {
 
 test('consume', async () => {
   for (const productGroup of queue) {
-    console.info(productGroup);
+    logger.info(productGroup);
     const body = {
       selectedMarket: [],
       selectedProductGroup: [productGroup],
@@ -43,7 +42,7 @@ test('consume', async () => {
       method: 'POST',
       type: 'json',
     });
-    logger.info(response.totalRecords);
+    logger.info(`total: ${response.totalRecords}`);
     await delay(1000);
 
     body.toRow = response.totalRecords;
@@ -53,11 +52,8 @@ test('consume', async () => {
       method: 'POST',
       type: 'json',
     });
-    expect(response).toBeTruthy();
-    await delay(1000);
     const { data } = response;
-    console.info(data[0]);
-    const ksql = new Ksql('simummuangmarket');
-    await ksql.insertMany(data);
+    logger.info(data.length);
+    await delay(1000);
   }
 }, 120000);
