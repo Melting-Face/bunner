@@ -1,15 +1,8 @@
-import {
-  expect,
-  test,
-} from 'bun:test';
+import { expect, test } from 'bun:test';
 import { load } from 'cheerio';
 import moment from 'moment';
 
-import {
-  delay,
-  logger,
-  request,
-} from '../lib/utils';
+import { delay, logger, request } from '../lib/utils';
 
 const date = '2023-09-01';
 const THAI_SOLAR_CALENDER = 543;
@@ -18,10 +11,15 @@ const htmls: Array<string> = [];
 
 test('produce', async () => {
   const workDate = moment(date).add(THAI_SOLAR_CALENDER, 'year');
-  let response = await request('https://www.oae.go.th/view/1/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3/TH-TH');
+  let response = await request(
+    'https://www.oae.go.th/view/1/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%AA%E0%B8%B4%E0%B8%99%E0%B8%84%E0%B9%89%E0%B8%B2%E0%B9%80%E0%B8%81%E0%B8%A9%E0%B8%95%E0%B8%A3/TH-TH',
+  );
   expect(response).toBeTruthy();
   let $ = load(response);
-  let url = $('a[title*="ข้าวหอมมะลิ 105"],a[title*="ข้าวเปลือกเจ้าหอมมะลิ 105"]').attr('href') || '';
+  let url =
+    $('a[title*="ข้าวหอมมะลิ 105"],a[title*="ข้าวเปลือกเจ้าหอมมะลิ 105"]').attr(
+      'href',
+    ) || '';
   let href;
   let pageDate = '';
   do {
