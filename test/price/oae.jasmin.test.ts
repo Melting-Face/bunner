@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import { delay, logger, request } from '../lib/utils';
 
-const date = '2023-09-01';
+const date = '2023-12-01';
 const THAI_SOLAR_CALENDER = 543;
 
 const htmls: Array<string> = [];
@@ -26,7 +26,8 @@ test('produce', async () => {
     response = await request(url);
     $ = load(response);
     pageDate = $('.post_meta').text().trim();
-    if (moment(pageDate, 'DD-MMMM-YYYY', 'th').isSameOrBefore(workDate)) {
+    logger.info(pageDate);
+    if (moment(pageDate, 'DD MMMM YYYY', 'th').isSameOrBefore(workDate)) {
       break;
     }
     logger.info(url);
@@ -42,5 +43,31 @@ test('produce', async () => {
 test('consume', async () => {
   for (const html of htmls) {
     const $ = load(html);
+    const year = $('table th').eq(0).text().trim();
+    const product = $('table th').eq(1).text().trim();
+    logger.info(`${year}, ${product}`);
+    let isPrice = false;
+    let month: string;
+    const entries = [];
+    $('table tr').each((_i, tr) => {
+      const tds = $(tr).find('td');
+      const firstCol = tds.eq(0).text().trim();
+      if (firstCol === 'เดือน') {
+        isPrice = true;
+        return;
+      }
+
+      if (isPrice) {
+        const entry: any = {};
+        month = firstCol;
+        tds.each((j, td) => {
+          const text = $(td).text().trim();
+          if (j === 0) {
+            entry[`col${j}`] = text
+              // ? month
+          }
+        });
+      }
+    });
   }
 });
