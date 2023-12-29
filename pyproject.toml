@@ -1,4 +1,85 @@
+[tool.ruff]
+extend-include = [
+  "AIR",
+  "B",
+  "C4",
+  "C90",
+  "COM",
+  "FURB",
+  "I",
+  "PD",
+  "Q",
+  "SIM",
+]
+extend-ignore = ["PD901"]
+
+# sqlfluff
+# https://docs.sqlfluff.com/en/stable/rules.html#rule-index
 [tool.sqlfluff.core]
-dialect = "snowflake"
-exclude_rules = "RF04"
+dialect = "postgres"
+templater = "jinja"
+sql_file_exts = ".sql"
+exclude_rules = "L009,L016,L031,L034,L042,RF04,ST01,AL02"
+max_line_length = 250
 warnings = "PRS"
+ignore = "parsing"
+
+[tool.sqlfluff.indentation]
+tab_space_size = 4
+
+[tool.sqlfluff.templater.dbt]
+project_dir = "./"
+
+[tool.sqlfluff.templater.jinja]
+apply_dbt_builtins = true
+
+[tool.sqlfluff.layout.type.select_clause]
+line_position = "alone"
+
+[tool.sqlfluff.layout.type.start_bracket]
+spacing_after = "touch"
+
+[tool.sqlfluff.layout.type.end_bracket]
+spacing_before = "touch"
+
+[tool.sqlfluff.layout.type.colon]
+spacing_before = "touch"
+spacing_after = "touch"
+
+[tool.sqlfluff.layout.type.end_of_file]
+spacing_within = "touch"
+
+[tool.sqlfluff.layout.type.comparison_operator]
+spacing_before = "any"
+line_position = "leading"
+
+[tool.sqlfluff.rules.references.special_chars]
+allow_space_in_identifier = true
+additional_allowed_characters = [".", "(", ")", "-", "$", "="]
+
+[tool.sqlfluff.rules.capitalisation.keywords]
+capitalisation_policy = "lower"
+
+[tool.sqlfluff.rules.capitalisation.identifiers]
+capitalisation_policy = "lower"
+
+[tool.sqlfluff.rules.capitalisation.functions]
+extended_capitalisation_policy = "lower"
+
+[tool.sqlfluff.rules.capitalisation.literals]
+capitalisation_policy = "lower"
+
+[tool.sqlfluff.rules.capitalisation.types]
+extended_capitalisation_policy = "lower"
+
+[tool.sqlfluff.rules.aliasing.length]
+min_alias_length = 4
+
+[tool.sqlfluff.rules.aliasing.table]
+aliasing = "explicit"
+
+[tool.sqlfluff.rules.aliasing.column]
+aliasing = "implicit"
+
+[tool.sqlfluff.rules.aliasing.expression]
+allow_scalar = false
