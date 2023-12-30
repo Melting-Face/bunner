@@ -1,0 +1,12 @@
+bronze:
+  outputs:
+    dev:
+      dbname: bronze
+      host: localhost
+      pass: '1234'
+      port: 25432
+      schema: result
+      threads: 1
+      type: postgres
+      user: postgres
+  target: dev
