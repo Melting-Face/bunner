@@ -10,7 +10,9 @@ services:
     command:
       - |
         /opt/spark/sbin/start-thriftserver.sh
-        /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+        /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master \
+        --properties-file /opt/spark/spark-config.conf
     entrypoint: ["bash", "-c"]
     volumes:
       - ./logs:/opt/spark/log
+      - ./spark-config.conf:/opt/spark/spark-config.conf
