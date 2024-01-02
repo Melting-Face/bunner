@@ -1,4 +1,5 @@
-import { test } from 'bun:test';
+import { expect, test } from 'bun:test';
+import { request } from '../lib/utils'
 
 test('consume', async () => {
   const urls = [
@@ -8,5 +9,6 @@ test('consume', async () => {
 
   for (const url of urls) {
     const response = await request(url);
+    expect(response).toBeTruthy();
   }
 });

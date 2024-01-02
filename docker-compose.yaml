@@ -3,16 +3,20 @@ version: "3.7"
 services:
   dbt-spark:
     container_name: dbt-spark
-    image: spark
+    image: apache/spark-py:v3.4.0
     ports:
       - "10000:10000"
+      - "8080:8080"
+      - "7077:7077"
       - "4040:4040"
+    user: '0'
     command:
       - |
-        /opt/spark/sbin/start-thriftserver.sh
-        /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master \
-        --properties-file /opt/spark/spark-config.conf
+        /opt/spark/bin/spark-shell \
+        --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 \
+        --packages "io.delta:delta-core_2.12:2.4.0" \
+        --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
+        --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
     entrypoint: ["bash", "-c"]
     volumes:
       - ./logs:/opt/spark/log
-      - ./spark-config.conf:/opt/spark/spark-config.conf
