@@ -24,8 +24,8 @@ services:
           memory: 4g
     volumes:
       - ./logs:/opt/spark/log
-      - ./spark/hive-site.xml:/opt/spark/conf/hive-site.xml
-      - ./spark/postgresql-42.3.8.jar:/opt/spark/jars/postgresql-42.3.8.jar
+      - ./conf:/opt/spark/conf
+      - ./jars/postgresql-42.3.8.jar:/opt/spark/jars/postgresql-42.3.8.jar
     depends_on:
       - dbt-metastore
 
