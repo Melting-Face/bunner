@@ -18,5 +18,25 @@ services:
         --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
         --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
     entrypoint: ["bash", "-c"]
+    deploy:
+      resources:
+        limits:
+          memory: 4g
     volumes:
       - ./logs:/opt/spark/log
+      - ./spark/hive-site.xml:/opt/spark/conf/hive-site.xml
+      - ./spark/postgresql-42.3.8.jar:/opt/spark/jars/postgresql-42.3.8.jar
+    depends_on:
+      - dbt-metastore
+
+  dbt-metastore:
+    container_name: dbt-metastore
+    image: postgres:14
+    ports:
+      - "25432:5432"
+    volumes:
+      - ./.data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=dbt
+      - POSTGRES_PASSWORD=dbt
+      - POSTGRES_DB=metastore
