@@ -14,9 +14,9 @@ services:
       - |
         /opt/spark/bin/spark-shell \
         --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 \
-        --packages "io.delta:delta-core_2.12:2.4.0" \
         --conf "spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension" \
         --conf "spark.sql.catalog.spark_catalog=org.apache.spark.sql.delta.catalog.DeltaCatalog"
+        --name Thrift JDBC/ODBC Server
     entrypoint: ["bash", "-c"]
     deploy:
       resources:
@@ -26,6 +26,7 @@ services:
       - ./logs:/opt/spark/log
       - ./conf:/opt/spark/conf
       - ./jars/postgresql-42.3.8.jar:/opt/spark/jars/postgresql-42.3.8.jar
+      - ./jars/delta-core_2.12-2.4.0.jar:/opt/spark/jars/delta-core_2.12-2.4.0.jar
     depends_on:
       - dbt-metastore
 
