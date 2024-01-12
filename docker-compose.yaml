@@ -24,15 +24,26 @@ services:
       - ./jars/delta-storage-2.4.0.jar:/opt/spark/jars/delta-storage-2.4.0.jar
     depends_on:
       - dbt-metastore
-
   dbt-metastore:
     container_name: dbt-metastore
     image: postgres:14
     ports:
       - "25432:5432"
     volumes:
-      - ./.data:/var/lib/postgresql/data
+      - ./metastore:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=dbt
       - POSTGRES_PASSWORD=dbt
       - POSTGRES_DB=metastore
+  minio:
+    container_name: minio
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./data:/data
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=admin1234
+    command: ["server", "/data", "--console-address", ":9001"]
