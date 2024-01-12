@@ -1,5 +1,6 @@
 import { expect, test } from 'bun:test';
-import { request } from '../lib/utils'
+
+import { request } from '../lib/utils';
 
 test('consume', async () => {
   const urls = [

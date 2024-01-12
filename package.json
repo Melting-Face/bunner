@@ -19,6 +19,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.490.0",
     "@prisma/client": "^5.7.1",
     "@types/lodash": "^4.14.202",
     "cheerio": "^1.0.0-rc.12",

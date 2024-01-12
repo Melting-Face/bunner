@@ -1,6 +1,7 @@
 import { expect, test } from 'bun:test';
 import { load } from 'cheerio';
 import moment from 'moment';
+import pl from 'nodejs-polars';
 
 import { delay, logger, request } from '../lib/utils';
 
@@ -47,7 +48,8 @@ test('consume', async () => {
     const product = $('table th').eq(1).text().trim();
     logger.info(`${year}, ${product}`);
     let month: string;
-    const entries = [];
+    const entries: Array<object> = [];
+    const unit = $('div[align="right"]:not(:has(a))').text().trim();
     $('table tr').each((_i, tr) => {
       const tds = $(tr).find('td');
       const monthCol = tds.eq(0).text().trim();
@@ -57,6 +59,8 @@ test('consume', async () => {
         month = monthCol;
       }
       const entry: any = {
+        product,
+        unit,
         day,
         month,
       };
@@ -65,7 +69,8 @@ test('consume', async () => {
         const text = $(td).text().trim();
         entry[`col${j}`] = text;
       });
-      logger.info(JSON.stringify(entry, null, 2));
+      entries.push(entry);
     });
+    const df = pl.DataFrame(entries);
   }
 });
