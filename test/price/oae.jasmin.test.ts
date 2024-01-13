@@ -1,14 +1,35 @@
-import { expect, test } from 'bun:test';
+import { S3Client, ListBucketsCommand } from '@aws-sdk/client-s3';
+import { beforeAll, expect, test } from 'bun:test';
 import { load } from 'cheerio';
 import moment from 'moment';
 import pl from 'nodejs-polars';
 
 import { delay, logger, request } from '../lib/utils';
 
+const source = 'oae_jasmin';
 const date = '2023-12-11';
 const THAI_SOLAR_CALENDER = 543;
 
 const htmls: Array<string> = [];
+const entries: Array<object> = [];
+
+let client: S3Client;
+
+beforeAll(async () => {
+  const accessKeyId = Bun.env.MINIO_ID || '';
+  const secretAccessKey = Bun.env.MINIO_PW || '';
+  logger.info(accessKeyId, secretAccessKey);
+  client = new S3Client({
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+    },
+    region: 'us-east-1',
+    endpoint: 'http://127.0.0.1:9000',
+  });
+  const buckets = await client.send(new ListBucketsCommand({}));
+  console.info(buckets);
+});
 
 test('produce', async () => {
   const workDate = moment(date).add(THAI_SOLAR_CALENDER, 'year');
@@ -48,7 +69,6 @@ test('consume', async () => {
     const product = $('table th').eq(1).text().trim();
     logger.info(`${year}, ${product}`);
     let month: string;
-    const entries: Array<object> = [];
     const unit = $('div[align="right"]:not(:has(a))').text().trim();
     $('table tr').each((_i, tr) => {
       const tds = $(tr).find('td');
