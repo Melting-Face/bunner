@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import { beforeAll, expect, test } from 'bun:test';
 import { load } from 'cheerio';
 import moment from 'moment';
@@ -60,12 +62,7 @@ test('consume', async () => {
       if (!month && monthCol) {
         month = monthCol;
       }
-      const entry: any = {
-        product,
-        unit,
-        day,
-        month,
-      };
+      const entry: any = { product, unit, day, month };
       tds.slice(2).each((j, td) => {
         const text = $(td).text().trim();
         entry[`col${j}`] = text;
@@ -74,6 +71,6 @@ test('consume', async () => {
     });
   }
   const df = pl.DataFrame(entries);
-  const buffer = df.writeParquet();
+  const buffer = df.writeParquet({ compression: 'uncompressed' });
   await s3Client.push(`${source}/${Number(new Date())}.parquet`, buffer);
 });

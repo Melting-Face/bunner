@@ -60,6 +60,7 @@
     ],
     "newline-per-chained-call": "off",
     "object-property-newline": "error",
+    "object-curly-newline": ["error", "never"],
     "no-plusplus": [
       "error",
       {
