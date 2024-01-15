@@ -21,6 +21,7 @@ services:
       - ./logs:/opt/spark/log
     depends_on:
       - dbt-metastore
+      - minio
   dbt-metastore:
     container_name: dbt-metastore
     image: postgres:14
