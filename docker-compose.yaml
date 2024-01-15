@@ -3,9 +3,10 @@ version: "3.7"
 services:
   dbt-spark:
     container_name: dbt-spark
-    image: apache/spark-py:v3.4.0
+    build: spark
     ports:
       - "10000:10000"
+      - "9083:9083"
       - "8080:8080"
       - "7077:7077"
       - "4040:4040"
@@ -13,16 +14,11 @@ services:
     command:
       - |
         /opt/spark/bin/spark-shell \
-        --packages org.apache.hadoop:hadoop-client-runtime:3.3.4,org.apache.hadoop:hadoop-aws:3.3.4 \
         --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 \
         --name "Thrift JDBC/ODBC Server"
     entrypoint: ["bash", "-c"]
     volumes:
       - ./logs:/opt/spark/log
-      - ./conf:/opt/spark/conf
-      - ./jars/postgresql-42.3.8.jar:/opt/spark/jars/postgresql-42.3.8.jar
-      - ./jars/delta-core_2.12-2.4.0.jar:/opt/spark/jars/delta-core_2.12-2.4.0.jar
-      - ./jars/delta-storage-2.4.0.jar:/opt/spark/jars/delta-storage-2.4.0.jar
     depends_on:
       - dbt-metastore
   dbt-metastore:
