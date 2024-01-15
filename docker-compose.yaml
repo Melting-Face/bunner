@@ -34,7 +34,7 @@ services:
       - POSTGRES_DB=metastore
   minio:
     container_name: minio
-    image: minio/minio
+    build: minio
     ports:
       - "9000:9000"
       - "9001:9001"
