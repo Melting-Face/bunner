@@ -1,9 +1,8 @@
-
 -- Use the `ref` function to select from other models
 
 {{ config(
   materialized='table',
-  location_root='s3a://data/dbt',
+  location_root='s3a://warehouse/dbt',
   file_format='delta',
 ) }}
 
