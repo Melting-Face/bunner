@@ -4,4 +4,4 @@ WORKDIR /
 
 COPY . .
 
-RUN sh build.sh
+ENTRYPOINT [ "sh", "entrypoint.sh" ]

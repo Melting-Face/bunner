@@ -1,6 +1,4 @@
-import fs from 'fs';
-
-import { beforeAll, expect, test } from 'bun:test';
+import { expect, test } from 'bun:test';
 import { load } from 'cheerio';
 import moment from 'moment';
 import pl from 'nodejs-polars';
@@ -47,6 +45,7 @@ test('produce', async () => {
 
 test('consume', async () => {
   const s3Client = new S3('price');
+  const timestamp = new Date();
   for (const html of htmls) {
     const $ = load(html);
     const year = $('table th').eq(0).text().trim();
@@ -62,12 +61,11 @@ test('consume', async () => {
       if (!month && monthCol) {
         month = monthCol;
       }
-      const entry: any = { product, unit, day, month };
-      tds.slice(2).each((j, td) => {
-        const text = $(td).text().trim();
-        entry[`col${j}`] = text;
+      const entry: any = { product, unit, day, month, timestamp: timestamp.getTime() };
+      tds.slice(2).each((_j, td) => {
+        entry.price = $(td).text().trim();
+        entries.push(entry);
       });
-      entries.push(entry);
     });
   }
   const df = pl.DataFrame(entries);
