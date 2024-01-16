@@ -7,7 +7,11 @@
     Try changing "table" to "view" below
 */
 
-{{ config(materialized='table') }}
+{{ config(
+  materialized='table',
+  location_root='s3a://data/dbt',
+  file_format='delta',
+) }}
 
 with source_data as (
 
