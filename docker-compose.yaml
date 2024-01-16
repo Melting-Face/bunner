@@ -29,6 +29,11 @@ services:
       - POSTGRES_USER=dbt
       - POSTGRES_PASSWORD=dbt
       - POSTGRES_DB=metastore
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
   minio:
     container_name: minio
     build: minio
