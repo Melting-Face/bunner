@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
+     <property>
+        <name>metastore.thrift.uris</name>
+        <value>thrift://localhost:9083</value>
+    </property>
+
     <property>
         <name>javax.jdo.option.ConnectionURL</name>
         <value>jdbc:postgresql://postgres:5432/metastore</value>
@@ -49,5 +54,10 @@
     <property>
         <name>fs.s3a.connection.ssl.enabled</name>
         <value>false</value>
+    </property>
+
+    <property>
+        <name>spark.hadoop.fs.s3a.impl</name>
+        <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
     </property>
 </configuration>
