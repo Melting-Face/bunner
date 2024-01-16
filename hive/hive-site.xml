@@ -2,11 +2,6 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
     <property>
-        <name>metastore.thrift.uris</name>
-        <value>thrift://metastore:9083</value>
-    </property>
-
-    <property>
         <name>javax.jdo.option.ConnectionURL</name>
         <value>jdbc:postgresql://postgres:5432/metastore</value>
     </property>

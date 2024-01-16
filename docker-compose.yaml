@@ -8,6 +8,8 @@ services:
       - "10000:10000"
       - "4040:4040"
     user: '0'
+    volumes:
+      - ./spark-warehouse:/opt/spark/work-dir/spark-warehouse
     command:
       - |
         /opt/spark/bin/spark-shell \
@@ -52,7 +54,6 @@ services:
   trino:
     container_name: trino
     image: trinodb/trino
-    user: "0"
     ports:
       - "8080:8080"
     volumes:
