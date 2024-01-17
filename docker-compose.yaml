@@ -58,5 +58,6 @@ services:
       - "8080:8080"
     volumes:
       - ./hive.properties:/etc/trino/catalog/hive.properties
+      - ./delta.properties:/etc/trino/catalog/delta.properties
     depends_on:
       - metastore
