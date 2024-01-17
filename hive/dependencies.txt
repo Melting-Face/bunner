@@ -1,3 +1,4 @@
+org/apache/hadoop/hadoop-common/3.3.4/hadoop-common-3.3.4.jar
 org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar
 org/postgresql/postgresql/42.3.8/postgresql-42.3.8.jar
 com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar
