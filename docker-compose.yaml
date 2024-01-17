@@ -18,8 +18,8 @@ services:
     entrypoint: ["bash", "-c"]
     depends_on:
       - metastore
-  postgres:
-    container_name: postgres
+  db:
+    container_name: db
     image: postgres:14
     ports:
       - "25432:5432"
@@ -29,11 +29,6 @@ services:
       - POSTGRES_USER=dbt
       - POSTGRES_PASSWORD=dbt
       - POSTGRES_DB=metastore
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 3s
-      retries: 3
   minio:
     container_name: minio
     build: minio
@@ -54,7 +49,7 @@ services:
       - SERVICE_NAME=metastore
       - DB_DRIVER=postgres
     depends_on:
-      - postgres
+      - db
       - minio
   trino:
     container_name: trino

@@ -1,5 +1,6 @@
 org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar
 org/postgresql/postgresql/42.3.8/postgresql-42.3.8.jar
 com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar
-io/delta/delta-core_2.12/2.4.0/delta-core_2.12-2.4.0.jar
-io/delta/delta-storage/2.4.0/delta-storage-2.4.0.jar
+io/delta/delta-hive_2.12/0.6.0/delta-hive_2.12-0.6.0.jar
+io/delta/delta-standalone_2.12/0.6.0/delta-standalone_2.12-0.6.0.jar
+io/delta/delta-storage/2.2.0/delta-storage-2.2.0.jar

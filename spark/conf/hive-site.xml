@@ -5,9 +5,4 @@
         <name>hive.metastore.uris</name>
         <value>thrift://metastore:9083</value>
     </property>
-
-    <property>
-        <name>hive.metastore.warehouse.dir</name>
-        <value>s3a://warehouse/</value>
-    </property>
 </configuration>

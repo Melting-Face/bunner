@@ -1,14 +1,9 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
-     <property>
-        <name>metastore.thrift.uris</name>
-        <value>thrift://localhost:9083</value>
-    </property>
-
     <property>
         <name>javax.jdo.option.ConnectionURL</name>
-        <value>jdbc:postgresql://postgres:5432/metastore</value>
+        <value>jdbc:postgresql://db:5432/metastore</value>
     </property>
 
     <property>
@@ -24,6 +19,11 @@
     <property>
         <name>javax.jdo.option.ConnectionPassword</name>
         <value>dbt</value>
+    </property>
+
+    <property>
+        <name>metastore.metastore.event.db.notification.api.auth</name>
+        <value>false</value>
     </property>
 
     <property>
@@ -57,7 +57,12 @@
     </property>
 
     <property>
-        <name>spark.hadoop.fs.s3a.impl</name>
-        <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+        <name>hive.input.format</name>
+        <value>io.delta.hive.HiveInputFormat</value>
+    </property>
+
+    <property>
+        <name>hive.tez.input.format</name>
+        <value>io.delta.hive.HiveInputFormat</value>
     </property>
 </configuration>
