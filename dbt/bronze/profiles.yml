@@ -6,6 +6,5 @@ bronze:
       port: 10000
       schema: bronze
       threads: 1
-      user: root
       type: spark
   target: dev
