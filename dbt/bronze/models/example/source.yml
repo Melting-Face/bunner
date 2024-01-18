@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: bronze
+    tables:
+      - name: price_item
+        external:
+          location: 's3a://warehouse/price_item.csv'
+          using: csv
+          options:
+            header: 'true'
+        columns:
+          - name: id
+            data_type: bigint
