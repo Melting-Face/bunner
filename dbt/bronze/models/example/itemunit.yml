@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: bronze
+    tables:
+      - name: price_itemunit
+        external:
+          location: 's3a://warehouse/price_itemunit.csv'
+          using: csv
+          options:
+            header: 'true'
+        columns:
+          - name: id
+            data_type: bigint
+          - name: unit
+            data_type: varchar(1)
+          - name: unit_raw
+            data_type: string
+          - name: unit_rate
+            data_type: decimal(20, 9)
+          - name: unit_label
+            data_type: string
+          - name: item_id
+            data_type: bigint
+          - name: evaluation_memo
+            data_type: string
+          - name: evaluator_staff_id
+            data_type: bigint
+          - name: submitter_staff_id
+            data_type: bigint
+          - name: status
+            data_type: varchar(1)

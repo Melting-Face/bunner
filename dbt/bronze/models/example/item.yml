@@ -12,3 +12,9 @@ sources:
         columns:
           - name: id
             data_type: bigint
+          - name: country_id
+            data_type: varchar(2)
+          - name: product_raw
+            data_type: string
+          - name: source_id
+            data_type: bigint
