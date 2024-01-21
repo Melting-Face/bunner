@@ -5,11 +5,8 @@ sources:
     tables:
       - name: item
         external:
-          location: 's3a://warehouse/price_item.parquet'
+          location: 's3a://warehouse/price_item/'
           using: parquet
-          partitions:
-            - name: country_id
-              data_type: varchar(2)
         columns:
           - name: id
             data_type: bigint
@@ -22,11 +19,8 @@ sources:
 
       - name: itemunit
         external:
-          location: 's3a://warehouse/price_itemunit.parquet'
+          location: 's3a://warehouse/price_itemunit/'
           using: parquet
-          partitions:
-            - name: status
-              data_type: varchar(1)
         columns:
           - name: id
             data_type: bigint
