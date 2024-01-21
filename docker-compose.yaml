@@ -1,15 +1,13 @@
 ---
 version: "3.7"
 services:
-  dbt-spark:
-    container_name: dbt-spark
+  spark:
+    container_name: spark
     build: spark
     ports:
       - "10000:10000"
       - "4040:4040"
     user: '0'
-    volumes:
-      - ./spark-warehouse:/opt/spark/work-dir/spark-warehouse
     command:
       - |
         /opt/spark/bin/spark-shell \
@@ -57,7 +55,17 @@ services:
     ports:
       - "8080:8080"
     volumes:
+      - ./pg.properties:/etc/trino/catalog/pg.properties
       - ./hive.properties:/etc/trino/catalog/hive.properties
       - ./delta.properties:/etc/trino/catalog/delta.properties
     depends_on:
       - metastore
+  superset:
+    container_name: superset
+    build: superset
+    ports:
+      - "8088:8088"
+    environment:
+      - SUPERSET_SECRET_KEY=c2VjcmV0X2tleQ==
+    platform: linux/amd64
+    command: ["sh", "create_user.sh"]

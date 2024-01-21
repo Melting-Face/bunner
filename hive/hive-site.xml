@@ -57,6 +57,11 @@
     </property>
 
     <property>
+        <name>fs.s3a.impl</name>
+        <value>org.apache.hadoop.fs.s3a.S3AFileSystem</value>
+    </property>
+
+    <property>
         <name>hive.input.format</name>
         <value>io.delta.hive.HiveInputFormat</value>
     </property>

@@ -21,8 +21,6 @@ templater = "jinja"
 sql_file_exts = ".sql"
 exclude_rules = "L009,L016,L031,L034,L042,RF04,ST01,AL02"
 max_line_length = 250
-warnings = "PRS"
-ignore = "parsing"
 
 [tool.sqlfluff.indentation]
 tab_space_size = 4

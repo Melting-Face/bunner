@@ -1,51 +1,42 @@
-# DEV ENV
+# DOCKER IMAGES
 
-## Linter
+- [trino](https://hub.docker.com/r/trinodb/trino)
 
-### python
+- [spark](https://hub.docker.com/r/apache/spark-py)
 
-- ruff
+- [hive](https://hub.docker.com/r/apache/hive)
 
-### sql
+- [postgres](https://hub.docker.com/_/postgres)
 
-- sqlfluff
+- [minio](https://hub.docker.com/r/minio/minio)
 
-### typescript
+# DBT
 
-- eslint
+## profiles.yml
 
-
-## Formatter
-
-### python
-
-- ruff
-
-- black
-
-### sql
-
-- sqlfluff
-
-### typescript
-
-- eslint
-
-- prettier
-
-# DEV COMMAND
-
-## conda
-
-### create virtual env
-```shell
-conda create -n airflow python=3.11 pyspark
+```yaml
+<profile_name>:
+  outputs:
+    dev:
+      host: localhost
+      method: thrift
+      port: 10000
+      schema: bronze
+      threads: 1
+      type: spark
+  target: dev
 ```
 
+## packages.yml
 
-## ksqldb
-
-### cli
-```shell
-docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
+```yaml
+packages:
+  - package: dbt-labs/codegen
+    version: 0.12.1
+  - package: dbt-labs/dbt_project_evaluator
+    version: 0.8.1
+  - package: dbt-labs/dbt_utils
+    version: 1.1.1
+  - package: dbt-labs/dbt_external_tables
+    version: 0.8.7
 ```
