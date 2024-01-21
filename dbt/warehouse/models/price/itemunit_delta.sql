@@ -1,5 +1,5 @@
 {{ config(
-    location_root='s3a://warshouse/delta',
+    location_root='s3a://warehouse',
     file_format='delta',
     partition_by='country_id'
 ) }}

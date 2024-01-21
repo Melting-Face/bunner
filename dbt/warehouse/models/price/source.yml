@@ -32,7 +32,7 @@ sources:
           - name: unit_raw
             data_type: string
           - name: unit_rate
-            data_type: decimal(20, 9)
+            data_type: double
           - name: unit_label
             data_type: string
           - name: item_id
