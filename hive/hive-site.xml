@@ -31,6 +31,11 @@
         <value>s3a://warehouse/</value>
     </property>
 
+    <property>
+          <name>hive.execution.engine</name>
+          <value>spark</value>
+    </property>
+
      <property>
         <name>fs.s3a.access.key</name>
         <value>admin</value>

@@ -7,6 +7,9 @@ sources:
         external:
           location: 's3a://warehouse/price_item.parquet'
           using: parquet
+          partitions:
+            - name: country_id
+              data_type: varchar(2)
         columns:
           - name: id
             data_type: bigint
@@ -16,14 +19,14 @@ sources:
             data_type: string
           - name: source_id
             data_type: bigint
-        partitions:
-          - name: country_id
-            data_type: varchar(2)
 
       - name: itemunit
         external:
           location: 's3a://warehouse/price_itemunit.parquet'
           using: parquet
+          partitions:
+            - name: status
+              data_type: varchar(1)
         columns:
           - name: id
             data_type: bigint
@@ -43,8 +46,5 @@ sources:
             data_type: bigint
           - name: submitter_staff_id
             data_type: bigint
-          - name: status
-            data_type: varchar(1)
-        partitions:
           - name: status
             data_type: varchar(1)
