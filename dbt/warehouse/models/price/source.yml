@@ -37,8 +37,8 @@ sources:
           - name: evaluation_memo
             data_type: string
           - name: evaluator_staff_id
-            data_type: bigint
+            data_type: double
           - name: submitter_staff_id
-            data_type: bigint
+            data_type: double
           - name: status
             data_type: varchar(1)
