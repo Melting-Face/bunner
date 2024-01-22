@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  # - name: trade
+  - name: common
+    tables:
+      - name: static_country_map
+        external:
+          location: 's3a://warehouse/static_country_map/'
+          using: parquet
+        columns:
+          - name: RAW_COUNTRY_NAME
+            data_type: string
+          - name: MAPPED_COUNTRY_CODE
+            data_type: string
+          - name: IS_MAPPED
+            data_type: boolean
+          - name: SOURCE
+            data_type: string
+  # - name: integration
