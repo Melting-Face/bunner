@@ -1,0 +1,4 @@
+apache-airflow==2.7.3
+dbt-core
+dbt-spark[PyHive]
+astronomer-cosmos

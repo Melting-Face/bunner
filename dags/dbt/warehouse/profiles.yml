@@ -1,7 +1,7 @@
 warehouse:
   outputs:
     dev:
-      host: localhost
+      host: "{{ env_var('SPARK_HOST', 'localhost') }}"
       method: thrift
       port: 10000
       schema: data

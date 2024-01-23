@@ -17,4 +17,16 @@ sources:
             data_type: boolean
           - name: SOURCE
             data_type: string
-  # - name: integration
+  - name: integration
+    tables:
+      - name: trade_unit_lookup
+        external:
+          location: 's3a://warehouse/trade_unit_lookup/'
+          using: parquet
+        columns:
+          - name: RAW_UNIT
+            data_type: string
+          - name: MAPPED_UNIT
+            data_type: string
+          - name: STATUS
+            data_type: string

@@ -1,6 +1,23 @@
 ---
 version: "3.7"
 services:
+  airflow:
+    container_name: airflow
+    build: airflow
+    ports:
+      - "8080:8080"
+    command: ["standalone"]
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+    environment:
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+      - AIRFLOW__DATABASE__LOAD_DEFAULT_CONNECTIONS=False
+      - AIRFLOW__CORE__TEST_CONNECTION=Enabled
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://dbt:dbt@db:5432/metastore
+      - SPARK_HOST=spark
+    depends_on:
+      - db
   spark:
     container_name: spark
     build: spark
@@ -53,7 +70,7 @@ services:
     container_name: trino
     image: trinodb/trino
     ports:
-      - "8080:8080"
+      - "18080:8080"
     volumes:
       - ./pg.properties:/etc/trino/catalog/pg.properties
       - ./hive.properties:/etc/trino/catalog/hive.properties
