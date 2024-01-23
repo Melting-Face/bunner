@@ -1,6 +1,7 @@
 import { expect, test } from 'bun:test';
 
 import { load } from 'cheerio';
+import { snakeCase } from 'lodash';
 import moment from 'moment';
 import pl from 'nodejs-polars';
 
@@ -22,13 +23,13 @@ test('consume', async () => {
     const headers: Array<string> = [];
 
     $('table th').each((_i, th) => {
-      const header = $(th).text().trim();
+      const header = snakeCase($(th).text().trim());
       headers.push(header);
     });
 
     const entries: Array<object> = [];
     $('table tr').each((_i, tr) => {
-      const entry: any = { date, sourceId: 'sikapmedan' };
+      const entry: any = { date, source: 'sikapmedan' };
       $(tr)
         .find('td')
         .each((j, td) => {

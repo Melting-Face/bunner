@@ -42,3 +42,25 @@ sources:
             data_type: double
           - name: status
             data_type: varchar(1)
+
+      - name: sikapmedan
+        external:
+          location: 's3a://warehouse/sikapmedan/'
+          using: parquet
+        columns:
+          - name: date
+            data_type: string
+          - name: source
+            data_type: string
+          - name: 'no'
+            data_type: string
+          - name: komoditas
+            data_type: string
+          - name: perikanan
+            data_type: string
+          - name: harga_terendah
+            data_type: string
+          - name: harga_tertinggi
+            data_type: string
+          - name: harga_rata_rata
+            data_type: string
