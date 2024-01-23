@@ -1,6 +1,4 @@
 import {
-  CreateBucketCommand,
-  ListBucketsCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
@@ -199,12 +197,9 @@ CREATE TABLE IF NOT EXISTS ${this.source.toUpperCase()} (
 }
 
 class S3 {
-  Bucket: string;
-
   client: S3Client;
 
-  constructor(bucket: string) {
-    this.Bucket = bucket;
+  constructor() {
     const accessKeyId = Bun.env.MINIO_ID || '';
     const secretAccessKey = Bun.env.MINIO_PW || '';
     this.client = new S3Client({
@@ -217,25 +212,12 @@ class S3 {
     });
   }
 
-  async #initBucket() {
-    const { Bucket, client } = this;
-    const { Buckets = [] } = await client.send(new ListBucketsCommand({}));
-    logger.info(`${JSON.stringify(Buckets)}`);
-    const doesExisted = (Buckets as [{ Name: string }]).find(
-      (obj) => obj.Name === Bucket,
-    );
-    if (!doesExisted) {
-      await client.send(new CreateBucketCommand({ Bucket }));
-    }
-  }
-
   async push(Key: string, Body: Buffer) {
-    const { client, Bucket } = this;
-    await this.#initBucket();
+    const { client } = this;
     const params = {
-      Bucket,
       Key,
       Body,
+      Bucket: 'warehouse',
     };
     await client.send(new PutObjectCommand(params));
   }
