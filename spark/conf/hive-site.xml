@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>hive.metastore.uris</name>
+        <value>thrift://localhost:9083<value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:postgresql://db:5432/metastore</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>org.postgresql.Driver</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>dbt</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>dbt</value>
+    </property>
+
+    <property>
+        <name>metastore.metastore.event.db.notification.api.auth</name>
+        <value>false</value>
+    </property>
+
+    <property>
+        <name>hive.metastore.local</name>
+        <value>true</value>
+    </property>
+</configuration>

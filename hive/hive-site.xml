@@ -32,8 +32,8 @@
     </property>
 
     <property>
-          <name>hive.execution.engine</name>
-          <value>spark</value>
+        <name>hive.execution.engine</name>
+        <value>spark</value>
     </property>
 
      <property>

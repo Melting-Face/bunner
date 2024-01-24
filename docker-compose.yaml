@@ -32,7 +32,8 @@ services:
         --name "Thrift JDBC/ODBC Server"
     entrypoint: ["bash", "-c"]
     depends_on:
-      - metastore
+      - db
+      - minio
   db:
     container_name: db
     image: postgres:14
@@ -75,8 +76,6 @@ services:
       - ./pg.properties:/etc/trino/catalog/pg.properties
       - ./hive.properties:/etc/trino/catalog/hive.properties
       - ./delta.properties:/etc/trino/catalog/delta.properties
-    depends_on:
-      - metastore
   superset:
     container_name: superset
     build: superset
