@@ -1,7 +1,61 @@
+---
 version: 2
 
 sources:
-  # - name: trade
+  - name: trade
+    tables:
+      - name: sicex
+        external:
+          location: 's3a://warehouse/sicex/'
+          using: parquet
+        columns:
+          - name: '`Company declarant`'
+            data_type: string
+          - name: 'Supplier'
+            data_type: string
+          - name: '`Foreign Company`'
+            data_type: string
+          - name: '`Consignee Company Name`'
+            data_type: string
+          - name: '`Date yyyy-mm-dd`'
+            data_type: string
+          - name: '`Supplier Address`'
+            data_type: string
+          - name: 'Address'
+            data_type: string
+          - name: '`Foreign Company Address`'
+            data_type: string
+          - name: 'Importer'
+            data_type: string
+          - name: '`Importer Address`'
+            data_type: string
+          - name: '`Country of Origin`'
+            data_type: string
+          - name: '`Country of Sales`'
+            data_type: string
+          - name: '`Country of Procedence`'
+            data_type: string
+          - name: '`Country of Destiny`'
+            data_type: string
+          - name: '`Product Schedule B Code`'
+            data_type: string
+          - name: '`Harmonized Code/Product English`'
+            data_type: string
+          - name: '`Product Description`'
+            data_type: string
+          - name: '`Product Description by Schedule B Code`'
+            data_type: string
+          - name: '`Product Brand`'
+            data_type: string
+          - name: '`Commercial Brand`'
+            data_type: string
+          - name: '`Harmonized Code Description English`'
+            data_type: string
+          - name: '`TOTAL Quantity 1`'
+            data_type: string
+          - name: '`Measure Unit 1 (Quantity-1)`'
+            data_type: string
+
   - name: common
     tables:
       - name: static_country_map

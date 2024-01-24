@@ -1,4 +1,4 @@
-FROM apache/superset
+FROM apache/superset:latest-py310
 
 WORKDIR /app
 
