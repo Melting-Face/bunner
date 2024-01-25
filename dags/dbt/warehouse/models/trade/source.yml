@@ -55,6 +55,36 @@ sources:
             data_type: string
           - name: '`Measure Unit 1 (Quantity-1)`'
             data_type: string
+          - name: '`TOTAL Net Weight (Kg)`'
+            data_type: string
+          - name: '`TOTAL Gross Weight (Kg)`'
+            data_type: string
+          - name: '`TOTAL CIF Value (US$)`'
+            data_type: string
+          - name: '`TOTAL FOB Value (US$)`'
+            data_type: string
+          - name: '`Type of Transport`'
+            data_type: string
+          - name: '`Port of Loading`'
+            data_type: string
+          - name: '`Port of Unloading`'
+            data_type: string
+          - name: '`Transport Company`'
+            data_type: string
+          - name: 'Incoterm'
+            data_type: string
+          - name: '`Transaction Term`'
+            data_type: string
+          - name: '`Way of Payment`'
+            data_type: string
+          - name: Contact
+            data_type: string
+          - name: Telephone
+            data_type: string
+          - name: Email
+            data_type: string
+          - name: '`Type of Packaging`'
+            data_type: string
 
   - name: common
     tables:

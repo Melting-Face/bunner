@@ -84,5 +84,7 @@ services:
       - "8088:8088"
     environment:
       - SUPERSET_SECRET_KEY=c2VjcmV0X2tleQ==
+      - WTF_CSRF_ENABLED='False'
+      - TALISMAN_ENABLED='False'
     platform: linux/amd64
     command: ["sh", "create_user.sh"]
