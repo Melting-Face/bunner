@@ -1,6 +1,5 @@
 ---
 version: 2
-
 sources:
   - name: trade
     tables:
@@ -16,6 +15,8 @@ sources:
           - name: '`Foreign Company`'
             data_type: string
           - name: '`Consignee Company Name`'
+            data_type: string
+          - name: '`Date yyyy-mm`'
             data_type: string
           - name: '`Date yyyy-mm-dd`'
             data_type: string
@@ -77,15 +78,18 @@ sources:
             data_type: string
           - name: '`Way of Payment`'
             data_type: string
-          - name: Contact
+          - name: 'Contact'
             data_type: string
-          - name: Telephone
+          - name: 'Telephone'
             data_type: string
-          - name: Email
+          - name: 'Email'
             data_type: string
           - name: '`Type of Packaging`'
             data_type: string
-
+          - name: 'Source'
+            data_type: string
+          - name: 'Trade'
+            data_type: string
   - name: common
     tables:
       - name: static_country_map
