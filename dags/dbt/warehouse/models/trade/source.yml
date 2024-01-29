@@ -3,93 +3,51 @@ version: 2
 sources:
   - name: trade
     tables:
-      - name: sicex
+      - name: trade_sicex_argentina_import_dynamic
         external:
-          location: 's3a://warehouse/sicex/'
-          using: parquet
+          location: 's3a://warehouse/trade_sicex_argentina_import_dynamic/'
+          using: csv
+          options:
+            header: 'true'
         columns:
-          - name: '`Company declarant`'
+          - name: DATE
+            data_type: date
+          - name: IMPORTER
             data_type: string
-          - name: 'Supplier'
+          - name: ORIGIN_COUNTRY
             data_type: string
-          - name: '`Foreign Company`'
+          - name: EXPORT_COUNTRY
             data_type: string
-          - name: '`Consignee Company Name`'
+          - name: IMPORT_COUNTRY
             data_type: string
-          - name: '`Date yyyy-mm`'
+          - name: SCHEDULE_B_CODE
             data_type: string
-          - name: '`Date yyyy-mm-dd`'
+          - name: HS_CODE
             data_type: string
-          - name: '`Supplier Address`'
+          - name: PRODUCT_DESCRIPTION
             data_type: string
-          - name: 'Address'
+          - name: BRAND
             data_type: string
-          - name: '`Foreign Company Address`'
+          - name: HS_CODE_DESCRIPTION
             data_type: string
-          - name: 'Importer'
+          - name: QUANTITY
+            data_type: double
+          - name: QUANTITY_UNIT
             data_type: string
-          - name: '`Importer Address`'
+          - name: TOTAL_PRICE_USD
+            data_type: double
+          - name: TOTAL_FOB_USD
+            data_type: double
+          - name: TOTAL_CIF_USD
+            data_type: double
+          - name: TRANSPORT
             data_type: string
-          - name: '`Country of Origin`'
+          - name: PORT_OF_LOADING
             data_type: string
-          - name: '`Country of Sales`'
+          - name: INCOTERMS
             data_type: string
-          - name: '`Country of Procedence`'
-            data_type: string
-          - name: '`Country of Destiny`'
-            data_type: string
-          - name: '`Product Schedule B Code`'
-            data_type: string
-          - name: '`Harmonized Code/Product English`'
-            data_type: string
-          - name: '`Product Description`'
-            data_type: string
-          - name: '`Product Description by Schedule B Code`'
-            data_type: string
-          - name: '`Product Brand`'
-            data_type: string
-          - name: '`Commercial Brand`'
-            data_type: string
-          - name: '`Harmonized Code Description English`'
-            data_type: string
-          - name: '`TOTAL Quantity 1`'
-            data_type: string
-          - name: '`Measure Unit 1 (Quantity-1)`'
-            data_type: string
-          - name: '`TOTAL Net Weight (Kg)`'
-            data_type: string
-          - name: '`TOTAL Gross Weight (Kg)`'
-            data_type: string
-          - name: '`TOTAL CIF Value (US$)`'
-            data_type: string
-          - name: '`TOTAL FOB Value (US$)`'
-            data_type: string
-          - name: '`Type of Transport`'
-            data_type: string
-          - name: '`Port of Loading`'
-            data_type: string
-          - name: '`Port of Unloading`'
-            data_type: string
-          - name: '`Transport Company`'
-            data_type: string
-          - name: 'Incoterm'
-            data_type: string
-          - name: '`Transaction Term`'
-            data_type: string
-          - name: '`Way of Payment`'
-            data_type: string
-          - name: 'Contact'
-            data_type: string
-          - name: 'Telephone'
-            data_type: string
-          - name: 'Email'
-            data_type: string
-          - name: '`Type of Packaging`'
-            data_type: string
-          - name: 'Source'
-            data_type: string
-          - name: 'Trade'
-            data_type: string
+          - name: CRAWLED_AT
+            data_type: timestamp
   - name: common
     tables:
       - name: static_country_map

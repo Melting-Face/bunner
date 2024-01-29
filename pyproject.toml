@@ -16,7 +16,7 @@ extend-ignore = ["PD901"]
 # sqlfluff
 # https://docs.sqlfluff.com/en/stable/rules.html#rule-index
 [tool.sqlfluff.core]
-dialect = "postgres"
+dialect = "sparksql"
 templater = "jinja"
 sql_file_exts = ".sql"
 exclude_rules = "L009,L016,L031,L034,L042,RF04,ST01,AL02"
@@ -53,7 +53,7 @@ line_position = "leading"
 
 [tool.sqlfluff.rules.references.special_chars]
 allow_space_in_identifier = true
-additional_allowed_characters = [".", "(", ")", "-", "$", "="]
+additional_allowed_characters = [".", "(", ")", "-", "$", "=", "/", "`"]
 
 [tool.sqlfluff.rules.capitalisation.keywords]
 capitalisation_policy = "lower"
@@ -75,6 +75,9 @@ min_alias_length = 4
 
 [tool.sqlfluff.rules.aliasing.table]
 aliasing = "explicit"
+
+[tool.sqlfluff.rules.aliasing.forbid]
+force_enable = true
 
 [tool.sqlfluff.rules.aliasing.column]
 aliasing = "implicit"
