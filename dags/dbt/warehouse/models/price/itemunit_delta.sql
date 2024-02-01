@@ -1,7 +1,8 @@
 {{ config(
     location_root='s3a://warehouse',
     file_format='delta',
-    partition_by='country_id'
+    partition_by='country_id',
+    post_hook="optimize {{ this }}"
 ) }}
 
 with itemunit as (
