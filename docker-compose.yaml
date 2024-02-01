@@ -72,9 +72,7 @@ services:
     ports:
       - "18080:8080"
     volumes:
-      - ./pg.properties:/etc/trino/catalog/pg.properties
-      - ./hive.properties:/etc/trino/catalog/hive.properties
-      - ./delta.properties:/etc/trino/catalog/delta.properties
+      - ./catalog:/etc/trino/catalog
     depends_on:
       - metastore
   superset:
