@@ -34,6 +34,8 @@ models:
   warehouse:
     # Config indicated by + and applies to all files under models/example/
     price:
+      +schema: price
       +materialized: table
     trade:
+      +schema: trade
       +materialized: table

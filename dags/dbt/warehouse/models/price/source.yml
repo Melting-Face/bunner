@@ -64,3 +64,42 @@ sources:
             data_type: string
           - name: harga_rata_rata
             data_type: string
+      - name: migration
+        external:
+          location: 's3a://warehouse/migration/'
+          using: parquet
+        columns:
+          - name: idx
+            data_type: string
+          - name: item_id
+            data_type: string
+          - name: "`To Correct?`"
+            data_type: string
+          - name: "`product name`"
+            data_type: string
+          - name: "`variety name`"
+            data_type: string
+          - name: "`grade name`"
+            data_type: string
+          - name: "`other attributes name`"
+            data_type: string
+          - name: remark
+            data_type: string
+          - name: origin_type
+            data_type: string
+          - name: origin_country
+            data_type: string
+          - name: origin_region
+            data_type: string
+          - name: origin_continent
+            data_type: string
+          - name: status
+            data_type: string
+          - name: assignee
+            data_type: string
+          - name: evaluator
+            data_type: string
+          - name: comment
+            data_type: string
+          - name: spreadsheet_key
+            data_type: string
